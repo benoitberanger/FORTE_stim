@@ -63,12 +63,18 @@ Parameters.Text.ClickCorlor = [0   255 0  ]; % [R G B] ( from 0 to 255 )
 %   FORTE   %
 %%%%%%%%%%%%%%%
 
-% Crosses wher the circle will apear, first displayed in the "fixation"
-Parameters.Forte.Fixation.spacing_x_ratio     = 0.1;         % 0 to 1
-Parameters.Forte.Fixation.spacing_y_ratio     = 0.1;         % 0 to 1
-Parameters.Forte.Fixation.dimension_ratio     = 0.1;         % 0 to 1
-Parameters.Forte.Fixation.width_height_ratio  = 1/10;         % 0 to 1
+% Crosses where the circle will apear, first displayed in the "fixation"
+Parameters.Forte.Fixation.spacing_x_ratio     = 0.1;         % from 0 to 1
+Parameters.Forte.Fixation.spacing_y_ratio     = 0.1;         % from 0 to 1
+Parameters.Forte.Fixation.dimension_ratio     = 0.1;         % from 0 to 1
+Parameters.Forte.Fixation.width_height_ratio  = 1/10;        % from 0 to 1
 Parameters.Forte.Fixation.color               = [0 0 0 255]; % [R G B a]
+
+% Circles of representing the keys to press, display in "instruction"
+Parameters.Forte.Instruction.diameter_ratio     = 0.15;           % from 0 to 1
+Parameters.Forte.Instruction.thickness_ratio    = 1/10;          % from 0 to 1
+Parameters.Forte.Instruction.color              = [255 0 0 255]; % [R G B a]
+
 
 %%%%%%%%%%%%%%
 %  Keybinds  %

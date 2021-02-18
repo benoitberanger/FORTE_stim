@@ -29,10 +29,13 @@ try
     %% Prepare objects
     
     FIXATION    = FORTE.Prepare.Fixation;
-%     INSTRUCTION = FORTE.Prepare.Instruction;
+    INSTRUCTION = FORTE.Prepare.Instruction(FIXATION);
 %     OUTCOME     = FORTE.Prepare.Outcome;
     
-    FIXATION.Draw; FIXATION.Flip;
+%%
+FIXATION.Draw
+INSTRUCTION.Draw([0 1 0 0 0])
+INSTRUCTION.Flip
     %% Eyelink
     
     Common.StartRecordingEyelink;
