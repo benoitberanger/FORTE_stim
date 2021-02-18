@@ -52,26 +52,147 @@ try
             
             case 'StartTime' % --------------------------------------------
                 
-                % CROSS.Draw
-                % Screen('DrawingFinished',S.PTB.wPtr);
-                % Screen('Flip',S.PTB.wPtr);
-                
                 StartTime = Common.StartTimeEvent;
+                lastFlipOnset = StartTime;
                 
             case 'StopTime' % ---------------------------------------------
                 
                 [ ER, RR, StopTime ] = Common.StopTimeEvent( EP, ER, RR, StartTime, evt );
                 
                 
-            case 'Rest' % -------------------------------------------------
+            case 'Fixation' % ---------------------------------------------
                 
-                lastFlipOnset = WaitSecs('UntilTime', StartTime + EP.Data{evt,2});
+                FIXATION.Draw();
                 
-                % SR.AddSample([lastFlipOnset-StartTime 0 0])
+                lastFlipOnset = Screen('Flip', S.PTB.wPtr);
+                
                 ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4:end}});
-                RR.AddEvent({[EP.Data{evt,1} '_CROSS'] lastFlipOnset-StartTime [] []});
+                %RR.AddEvent({[EP.Data{evt,1} '_CROSS'] lastFlipOnset-StartTime [] []});
                 
-                when = StartTime + EP.Data{evt+1,2} - S.PTB.slack;
+                when = lastFlipOnset + EP.Data{evt,3} - S.PTB.slack;
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                secs = lastFlipOnset;
+                while secs < when
+                                        
+                    % Fetch keys
+                    [keyIsDown, secs, keyCode] = KbCheck;
+                    
+                    if keyIsDown
+                        % ~~~ ESCAPE key ? ~~~
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
+                            break
+                        end
+                    end
+                    
+                end % while
+                if EXIT
+                    break
+                end
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                
+                
+            case 'Instruction' % ------------------------------------------
+                
+                FIXATION.Draw();
+                
+                triplet = EP.Data{evt,4};
+                reward  = EP.Data{evt,5};
+                fprintf('[%s] %s \n', num2str(triplet), reward)
+                INSTRUCTION.Draw( triplet );
+                
+                lastFlipOnset = Screen('Flip', S.PTB.wPtr);
+                ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4:end}});
+                
+                
+            case 'Response' % ---------------------------------------------
+                
+                n_good_press = 1;
+                keys_to_press = find(triplet);
+                next_key = keys_to_press(n_good_press);
+                valid_reward = -1;
+                last_good_key_onset = 0;
+                
+                ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4:end}});
+                
+                when = lastFlipOnset + Parameters.MaxTime - S.PTB.slack;
+                %==========================================================
+                secs = lastFlipOnset;
+                while secs < when
+                    
+                    % Fetch keys
+                    [keyIsDown, secs, keyCode] = KbCheck;
+                    
+                    if keyIsDown
+                        % ~~~ ESCAPE key ? ~~~
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
+                            break
+                        end
+                        
+                        is_response_key_being_presed = keyCode(S.Parameters.Fingers.Vect);
+                        if secs - last_good_key_onset < Parameters.DisableLastGoodKey
+                            is_response_key_being_presed(keys_to_press(n_good_press-1)) = 0;
+                        end
+                        
+                        if any(is_response_key_being_presed)
+                            
+                            good_key_being_presed = find(is_response_key_being_presed);
+                            is_next_key = sum(good_key_being_presed == next_key);
+                            
+                            if is_next_key
+                                
+                                fprintf('good \n')
+                                
+                                n_good_press = n_good_press+1;
+                                if n_good_press > 3
+                                    valid_reward = 1;
+                                    break
+                                end
+                                next_key = keys_to_press(n_good_press);
+                                last_good_key_onset = secs;
+                                
+                            else
+                                
+                                fprintf('bad \n')
+                                valid_reward = 0;
+                                break
+                                
+                            end
+                            
+                        end
+
+                        
+                    end
+                    
+                end % while
+                if EXIT
+                    break
+                end
+                if secs>when
+                    fprintf('!!! MaxTime reached !!! \n');
+                end
+                %==========================================================
+                
+            case 'Outcome'
+                
+                switch valid_reward
+                    case 1 % good
+                        OUTCOME.Draw(reward)
+                    case 0 % bad
+                        OUTCOME.Draw('')
+                    case -1 % out of time
+                        OUTCOME.Draw('')
+                end
+                    
+                
+                
+                lastFlipOnset = Screen('Flip', S.PTB.wPtr);
+                
+                ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4:end}});
+                %RR.AddEvent({[EP.Data{evt,1} '_CROSS'] lastFlipOnset-StartTime [] []});
+                
+                when = lastFlipOnset + EP.Data{evt,3} - S.PTB.slack;
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 secs = lastFlipOnset;
                 while secs < when
@@ -94,12 +215,6 @@ try
                     break
                 end
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                
-                
-            case {'Nerve', 'Skin'} % --------------------------------------
-                
-               
-               
                 
                 
             otherwise % ---------------------------------------------------

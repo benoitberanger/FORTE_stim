@@ -10,9 +10,11 @@ end
 
 % switch S.OperationMode
 %     case 'Acquisition'
-        Parameters.FixationDuration = 1.000; % s
-        Parameters.OutcomeDuration  = 1.500; % s
-        Parameters.nBlock           = 15;
+        Parameters.FixationDuration   = 1.000; % s
+        Parameters.OutcomeDuration    = 1.500; % s
+        Parameters.nBlock             = 15;
+        Parameters.MaxTime            = 10;    % s
+        Parameters.DisableLastGoodKey = 0.500; % s
 %     case 'FastDebug'
 %         
 %     case 'RealisticDebug'
@@ -84,8 +86,8 @@ for iBlock = 1 : Parameters.nBlock
     
     for trial_in_block = 1 : size(shuffled_triplet_reward,1)
         EP.AddPlanning({ 'Fixation'    NextOnset(EP) Parameters.FixationDuration randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
-        EP.AddPlanning({ 'Instruction' NextOnset(EP)                         0.5 randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
-        EP.AddPlanning({ 'Response'    NextOnset(EP)                           1 randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
+        EP.AddPlanning({ 'Instruction' NextOnset(EP)                           0 randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
+        EP.AddPlanning({ 'Response'    NextOnset(EP)                           0 randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
         EP.AddPlanning({ 'Outcome'     NextOnset(EP) Parameters.OutcomeDuration  randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
     end
     
