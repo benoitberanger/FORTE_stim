@@ -30,7 +30,7 @@ try
     
     FIXATION    = FORTE.Prepare.Fixation;
     INSTRUCTION = FORTE.Prepare.Instruction(FIXATION);
-%     OUTCOME     = FORTE.Prepare.Outcome;
+    OUTCOME     = FORTE.Prepare.Outcome;
     
 
     %% Eyelink

@@ -70,11 +70,19 @@ Parameters.Forte.Fixation.dimension_ratio     = 0.1;         % from 0 to 1
 Parameters.Forte.Fixation.width_height_ratio  = 1/10;        % from 0 to 1
 Parameters.Forte.Fixation.color               = [0 0 0 255]; % [R G B a]
 
-% Circles of representing the keys to press, display in "instruction"
+% Circles of representing the keys to press, displayed in "instruction"
 Parameters.Forte.Instruction.diameter_ratio     = 0.15;           % from 0 to 1
 Parameters.Forte.Instruction.thickness_ratio    = 1/10;          % from 0 to 1
 Parameters.Forte.Instruction.color              = [255 0 0 255]; % [R G B a]
 
+% Images displayed (and text) representing the reward (+10e or +0.01e), displayed in "outcome"
+Parameters.Forte.Outcome.fname_10euro       = '10-euro-note.jpeg';
+Parameters.Forte.Outcome.fname_1cent        = '1-cent.png';
+Parameters.Forte.Outcome.dimension_ratio    = 0.3;                 % from 0 to 1
+Parameters.Forte.Outcome.y_offcet_ratio_img = 0.6;                 % from 0 to 1
+Parameters.Forte.Outcome.y_offcet_ratio_txt = 0.3;                 % from 0 to 1
+Parameters.Forte.Outcome.font_color         = [128 0 0 255]; % [R G B] ( from 0 to 255 )
+Parameters.Forte.Outcome.font_size_ratio    = 0.3;
 
 %%%%%%%%%%%%%%
 %  Keybinds  %
