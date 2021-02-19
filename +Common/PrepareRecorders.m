@@ -1,5 +1,5 @@
 % function [ ER, RR, KL, SR ] = PrepareRecorders( EP )
-function [ ER, RR, KL ] = PrepareRecorders( EP )
+function [ ER, RR, KL, BR ] = PrepareRecorders( EP, Parameters )
 global S
 
 %% Prepare event record
@@ -28,6 +28,13 @@ RR.AddStartTime( 'StartTime' , 0 );
 %     case 'ELEC'
 %         SR = SampleRecorder( { 'time (s)', 'channel 7 - Nerve' 'channel 8 - Skin'} , round(EP.Data{end,2}*S.PTB.FPS*1.20) ); % ( duration of the task +20% )
 % end
+
+
+%% Behaviour recorder
+
+BR = EventRecorder( {'idx', 'iBlock', 'iTrial', 'triplet', 'reward', 'maxGain', 'gain', 'is_good', 'is_bad', 'is_maxtime',...
+    'onset_fixation', 'onset_instruction', 'onset_key_1','onset_key_2','onset_key_3','onset_outcome'}, Parameters.nBlock*10);
+
 
 %% Prepare the logger of MRI triggers
 

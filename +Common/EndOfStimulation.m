@@ -1,5 +1,6 @@
 % function TaskData = EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime )
-function TaskData = EndOfStimulation( TaskData, EP, ER, RR, KL, StartTime, StopTime )
+% function TaskData = EndOfStimulation( TaskData, EP, ER, RR, KL, StartTime, StopTime )
+function TaskData = EndOfStimulation( TaskData, EP, ER, RR, KL, BR, StartTime, StopTime )
 global S
 
 %% End of stimulation
@@ -43,6 +44,10 @@ TaskData.KL = KL;
 % SR.ClearEmptySamples
 % TaskData.SR = SR;
 
+% BehaviourRecorder
+BR.ClearEmptyEvents
+TaskData.BR = BR;
+
 % Save some values
 TaskData.StartTime = StartTime;
 TaskData.StopTime  = StopTime;
@@ -55,6 +60,7 @@ assignin('base','ER',ER)
 assignin('base','RR',RR)
 assignin('base','KL',KL)
 % assignin('base','SR',SR)
+assignin('base','BR',BR)
 
 assignin('base','TaskData',TaskData)
 
