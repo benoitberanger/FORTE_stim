@@ -73,17 +73,17 @@ end
 
 %% Diagnotic
 
-switch S.OperationMode
-    
-    case 'Acquisition'
-        
-    case 'FastDebug'
-        plotDelay(EP,ER)
-        
-    case 'RealisticDebug'
-        plotDelay(EP,ER)
-        
-end
+% switch S.OperationMode
+%     
+%     case 'Acquisition'
+%         
+%     case 'FastDebug'
+%         plotDelay(EP,ER)
+%         
+%     case 'RealisticDebug'
+%         plotDelay(EP,ER)
+%         
+% end
 
 
 end % function

@@ -32,7 +32,7 @@ try
     INSTRUCTION = FORTE.Prepare.Instruction(FIXATION);
     OUTCOME     = FORTE.Prepare.Outcome;
     
-
+    
     %% Eyelink
     
     Common.StartRecordingEyelink;
@@ -44,6 +44,8 @@ try
     EXIT  = 0;
     nGood = 0;
     nBad  = 0;
+    nMax  = 0;
+    nTot  = 0;
     
     % Loop over the EventPlanning
     for evt = 1 : size( EP.Data , 1 )
@@ -67,6 +69,8 @@ try
                 block          = EP.Data{evt,6};
                 trial          = EP.Data{evt,7};
                 totalmaxreward = EP.Data{evt,8};
+                
+                % log
                 fprintf('block=%2.d/%2.d   trial=%2.d/10   [%s]   %4s   ',...
                     block, Parameters.nBlock, trial, num2str(triplet), reward)
                 
@@ -81,7 +85,7 @@ try
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 secs = lastFlipOnset;
                 while secs < when
-                                        
+                    
                     % Fetch keys
                     [keyIsDown, secs, keyCode] = KbCheck;
                     
@@ -152,7 +156,7 @@ try
                                 
                                 n_good_press = n_good_press+1;
                                 if n_good_press > 3 % its a triplet
-                                    valid_reward = 1;                                    
+                                    valid_reward = 1;
                                     break
                                 end
                                 target_key = keys_to_press(n_good_press);
@@ -166,7 +170,7 @@ try
                             end
                             
                         end
-
+                        
                         
                     end
                     
@@ -176,13 +180,11 @@ try
                 end
                 %==========================================================
                 
-            case 'Outcome'
+            case 'Outcome' %-----------------------------------------------
                 
-                
-
                 switch valid_reward
                     case 1 % good
-                        logmsg = '';
+                        
                         switch reward
                             case 'high'
                                 OUTCOME.high_reward.Draw();
@@ -190,17 +192,38 @@ try
                             case 'low'
                                 OUTCOME.low_reward.Draw();
                                 OUTCOME.total.value = OUTCOME.total.value + 00.01;
-                        end                    
+                        end
+                        
+                        nGood = nGood + 1;
+                        logmsg = '';
                         OUTCOME.Draw();
                         
                     case 0 % bad
+                        
+                        nBad = nBad+ 1;
                         logmsg = 'bad';
                         OUTCOME.Draw();
+                        
                     case -1 % out of time
+                        
+                        nMax = nMax + 1;
                         logmsg = '!!! MaxTime reached !!!';
                         OUTCOME.Draw();
+                        
                 end
-                fprintf('T=%6.2f   t=%6.2f   %s \n', totalmaxreward, OUTCOME.total.value, logmsg)
+                nTot = nTot + 1;
+                
+                gain_pct = round( 100*OUTCOME.total.value/totalmaxreward );
+                loss_pct = 100 - gain_pct;
+                
+                % log
+                fprintf('T=%6.2f   t=%6.2f   gains/losses=%3d%%/%3d%%   G=%3d-%3d%%   B=%3d-%3d%%   M=%3d-%3d%%   %s \n',...
+                    totalmaxreward, OUTCOME.total.value,...
+                    gain_pct, loss_pct, ...
+                    nGood, round(100*nGood/nTot),...
+                    nBad , round(100*nBad /nTot),...
+                    nMax , round(100*nMax /nTot),...
+                    logmsg)
                 
                 
                 lastFlipOnset = Screen('Flip', S.PTB.wPtr);
