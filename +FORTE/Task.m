@@ -41,12 +41,12 @@ try
     %% Go
     
     % Initialize some variables
-    EXIT = 0;
+    EXIT  = 0;
+    nGood = 0;
+    nBad  = 0;
     
     % Loop over the EventPlanning
     for evt = 1 : size( EP.Data , 1 )
-        
-        Common.CommandWindowDisplay( EP, evt );
         
         switch EP.Data{evt,1}
             
@@ -61,6 +61,14 @@ try
                 
                 
             case 'Fixation' % ---------------------------------------------
+                
+                triplet        = EP.Data{evt,4};
+                reward         = EP.Data{evt,5};
+                block          = EP.Data{evt,6};
+                trial          = EP.Data{evt,7};
+                totalmaxreward = EP.Data{evt,8};
+                fprintf('block=%2.d/%2.d   trial=%2.d/10   [%s]   %4s   ',...
+                    block, Parameters.nBlock, trial, num2str(triplet), reward)
                 
                 FIXATION.Draw();
                 
@@ -96,9 +104,6 @@ try
                 
                 FIXATION.Draw();
                 
-                triplet = EP.Data{evt,4};
-                reward  = EP.Data{evt,5};
-                fprintf('[%s] %s \n', num2str(triplet), reward)
                 INSTRUCTION.Draw( triplet );
                 
                 lastFlipOnset = Screen('Flip', S.PTB.wPtr);
@@ -109,8 +114,8 @@ try
                 
                 n_good_press = 1;
                 keys_to_press = find(triplet);
-                next_key = keys_to_press(n_good_press);
-                valid_reward = -1;
+                target_key = keys_to_press(n_good_press);
+                valid_reward = -1; % flag : -1 oot-of-time, 0 bad, 1 good
                 last_good_key_onset = 0;
                 
                 ER.AddEvent({EP.Data{evt,1} lastFlipOnset-StartTime [] EP.Data{evt,4:end}});
@@ -130,31 +135,31 @@ try
                             break
                         end
                         
+                        % Select only the response keys
                         is_response_key_being_presed = keyCode(S.Parameters.Fingers.Vect);
+                        
+                        % Disable last good key press for a few milliseconds, to avoid double input
                         if secs - last_good_key_onset < Parameters.DisableLastGoodKey
                             is_response_key_being_presed(keys_to_press(n_good_press-1)) = 0;
                         end
                         
                         if any(is_response_key_being_presed)
                             
-                            good_key_being_presed = find(is_response_key_being_presed);
-                            is_next_key = sum(good_key_being_presed == next_key);
+                            response_key_being_presed = find(is_response_key_being_presed);
+                            is_good_key = sum(response_key_being_presed == target_key);
                             
-                            if is_next_key
-                                
-                                fprintf('good \n')
+                            if is_good_key % Good
                                 
                                 n_good_press = n_good_press+1;
-                                if n_good_press > 3
-                                    valid_reward = 1;
+                                if n_good_press > 3 % its a triplet
+                                    valid_reward = 1;                                    
                                     break
                                 end
-                                next_key = keys_to_press(n_good_press);
+                                target_key = keys_to_press(n_good_press);
                                 last_good_key_onset = secs;
                                 
-                            else
+                            else % Bad
                                 
-                                fprintf('bad \n')
                                 valid_reward = 0;
                                 break
                                 
@@ -169,22 +174,33 @@ try
                 if EXIT
                     break
                 end
-                if secs>when
-                    fprintf('!!! MaxTime reached !!! \n');
-                end
                 %==========================================================
                 
             case 'Outcome'
                 
+                
+
                 switch valid_reward
                     case 1 % good
-                        OUTCOME.Draw(reward)
+                        logmsg = '';
+                        switch reward
+                            case 'high'
+                                OUTCOME.high_reward.Draw();
+                                OUTCOME.total.value = OUTCOME.total.value + 10.00;
+                            case 'low'
+                                OUTCOME.low_reward.Draw();
+                                OUTCOME.total.value = OUTCOME.total.value + 00.01;
+                        end                    
+                        OUTCOME.Draw();
+                        
                     case 0 % bad
-                        OUTCOME.Draw('')
+                        logmsg = 'bad';
+                        OUTCOME.Draw();
                     case -1 % out of time
-                        OUTCOME.Draw('')
+                        logmsg = '!!! MaxTime reached !!!';
+                        OUTCOME.Draw();
                 end
-                    
+                fprintf('T=%6.2f   t=%6.2f   %s \n', totalmaxreward, OUTCOME.total.value, logmsg)
                 
                 
                 lastFlipOnset = Screen('Flip', S.PTB.wPtr);

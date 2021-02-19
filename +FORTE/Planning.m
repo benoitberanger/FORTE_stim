@@ -61,13 +61,14 @@ randomized_reward  = Shuffle(reward);
 
 % Associate triplet with reward
 randomized_triplet_reward = [randomized_triplet randomized_reward];
+Parameters.randomized_triplet_reward = randomized_triplet_reward;
 
 
 %% Define a planning <--- paradigme
 
 
 % Create and prepare
-header = { 'event_name', 'onset(s)', 'duration(s)', 'triplet', 'reward'};
+header = { 'event_name', 'onset(s)', 'duration(s)', 'triplet', 'reward' '#block' '#trial' 'totalmaxreward'};
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration
@@ -80,15 +81,27 @@ EP.AddStartTime('StartTime',0);
 
 % --- Stim ----------------------------------------------------------------
 
+totalmaxreward = 0;
+
 for iBlock = 1 : Parameters.nBlock
     
     shuffled_triplet_reward = Shuffle(randomized_triplet_reward,2);
     
-    for trial_in_block = 1 : size(shuffled_triplet_reward,1)
-        EP.AddPlanning({ 'Fixation'    NextOnset(EP) Parameters.FixationDuration randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
-        EP.AddPlanning({ 'Instruction' NextOnset(EP)                           0 randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
-        EP.AddPlanning({ 'Response'    NextOnset(EP)                           0 randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
-        EP.AddPlanning({ 'Outcome'     NextOnset(EP) Parameters.OutcomeDuration  randomized_triplet_reward{trial_in_block,1} randomized_triplet_reward{trial_in_block,2} })
+    for iTrialinBlock = 1 : size(shuffled_triplet_reward,1)
+        
+        switch randomized_triplet_reward{iTrialinBlock,2}
+            case 'high'
+                totalmaxreward = totalmaxreward + 10.00;
+            case 'low'
+                totalmaxreward = totalmaxreward + 00.01;
+        end
+        
+        other_info = { randomized_triplet_reward{iTrialinBlock,1} randomized_triplet_reward{iTrialinBlock,2} ...
+            iBlock iTrialinBlock totalmaxreward};
+        EP.AddPlanning([ { 'Fixation'    NextOnset(EP) Parameters.FixationDuration } other_info ])
+        EP.AddPlanning([ { 'Instruction' NextOnset(EP)                           0 } other_info ])
+        EP.AddPlanning([ { 'Response'    NextOnset(EP)                           0 } other_info ])
+        EP.AddPlanning([ { 'Outcome'     NextOnset(EP) Parameters.OutcomeDuration  } other_info ])
     end
     
 end
