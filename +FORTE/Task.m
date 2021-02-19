@@ -233,7 +233,7 @@ try
                         
                 end
                 nTot = nTot + 1;
-
+                
                 onset_outcome = Screen('Flip', S.PTB.wPtr);
                 
                 BR.AddEvent({nTot block trial triplet reward totalmaxreward OUTCOME.total.value is_good is_bad is_max ...
@@ -301,6 +301,7 @@ try
     TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, BR, StartTime, StopTime );
     
     TaskData.behaviour = cell2table( TaskData.BR.Data, 'VariableNames', TaskData.BR.Header, 'RowNames', cellstr(num2str( cell2mat( TaskData.BR.Data(:,1) ) )));
+    TaskData.behaviour.triplet = num2str(TaskData.behaviour.triplet);
     assignin('base','behaviour',TaskData.behaviour)
     disp(TaskData.behaviour)
     

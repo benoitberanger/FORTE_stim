@@ -91,7 +91,7 @@ Parameters.Forte.Outcome.font_size_ratio    = 0.3;
 KbName('UnifyKeyNames');
 
 % Parameters.Keybinds.TTL_t_ASCII          = KbName('t'); % MRI trigger has to be the first defined key
-Parameters.Keybinds.emulTTL_s_ASCII      = KbName('SPACE');
+Parameters.Keybinds.emulTTL_s_ASCII      = KbName('s');
 Parameters.Keybinds.Stop_Escape_ASCII    = KbName('ESCAPE');
 
 Parameters.Fingers.Vect(1) = KbName('c');

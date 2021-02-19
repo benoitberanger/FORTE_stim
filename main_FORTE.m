@@ -320,6 +320,12 @@ if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
     save(DataFile,     'S', 'names', 'onsets', 'durations');
     save([DataFile '_SPM'], 'names', 'onsets', 'durations');
     
+    fprintf('full datafile saved : %s \n', DataFile)
+    
+    writetable(S.TaskData.behaviour,[DataFile '.csv'],'Delimiter', ';');
+    writetable(S.TaskData.behaviour,[DataFile '.txt'],'Delimiter','\t');
+    movefile([DataFile '.txt'], [DataFile '.tsv']); % stupide matlab that does not allow me to write the extension of my choice...
+    
 end
 
 

@@ -4,9 +4,9 @@ global S
 if strcmp(S.OperationMode,'Acquisition')
     
     disp('----------------------------------')
-    disp('      Waiting for trigger "t"     ')
-    disp('                OR                ')
-    %     disp('   Press "s" to emulate trigger   ')
+    %     disp('      Waiting for trigger "t"     ')
+    %     disp('                OR                ')
+    disp('   Press "s" to emulate trigger   ')
     disp('      Press "Escape" to abort     ')
     disp('----------------------------------')
     disp(' ')
