@@ -1,4 +1,4 @@
-function [ EP , Parameters ] = Planning
+function [ EP , Parameters ] = Planning_im_ex_plicit
 global S
 
 if nargout < 1 % only to plot the paradigme when we execute the function outside of the main script
@@ -89,14 +89,14 @@ for iBlock = 1 : Parameters.nBlock
     
     for iTrialinBlock = 1 : size(shuffled_triplet_reward,1)
         
-        switch randomized_triplet_reward{iTrialinBlock,2}
+        switch shuffled_triplet_reward{iTrialinBlock,2}
             case 'high'
                 totalmaxreward = totalmaxreward + 10.00;
             case 'low'
                 totalmaxreward = totalmaxreward + 00.01;
         end
         
-        other_info = { randomized_triplet_reward{iTrialinBlock,1} randomized_triplet_reward{iTrialinBlock,2} ...
+        other_info = { shuffled_triplet_reward{iTrialinBlock,1} shuffled_triplet_reward{iTrialinBlock,2} ...
             iBlock iTrialinBlock totalmaxreward};
         EP.AddPlanning([ { 'Fixation'    NextOnset(EP) Parameters.FixationDuration } other_info ])
         EP.AddPlanning([ { 'Instruction' NextOnset(EP)                           0 } other_info ])

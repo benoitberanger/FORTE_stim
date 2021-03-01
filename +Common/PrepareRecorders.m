@@ -1,5 +1,5 @@
 % function [ ER, RR, KL, SR ] = PrepareRecorders( EP )
-function [ ER, RR, KL, BR ] = PrepareRecorders( EP, Parameters )
+function [ ER, RR, KL, BR ] = PrepareRecorders( EP, Parameters, task_version )
 global S
 
 %% Prepare event record
@@ -32,8 +32,14 @@ RR.AddStartTime( 'StartTime' , 0 );
 
 %% Behaviour recorder
 
-BR = EventRecorder( {'idx', 'iBlock', 'iTrial', 'triplet', 'reward', 'maxGain', 'gain', 'is_good', 'is_bad', 'is_maxtime',...
-    'onset_fixation', 'onset_instruction', 'onset_key_1','onset_key_2','onset_key_3','onset_outcome'}, Parameters.nBlock*10);
+switch task_version
+    case {'implicit', 'explicit'}
+        BR = EventRecorder( {'idx', 'iBlock', 'iTrial', 'triplet', 'reward', 'maxGain', 'gain', 'is_good', 'is_bad', 'is_maxtime',...
+            'onset_fixation', 'onset_instruction', 'onset_key_1','onset_key_2','onset_key_3','onset_outcome'}, Parameters.nBlock*10);
+    case 'forced_choice'
+        BR = EventRecorder( {'idx', 'triplet', 'reward', 'is_good', 'is_bad', 'is_maxtime',...
+            'onset_fixation', 'onset_forcedchoice', 'onset_key'}, 10);
+end
 
 
 %% Prepare the logger of MRI triggers

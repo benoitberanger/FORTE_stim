@@ -6,7 +6,12 @@ S.PTB.slack = 0.001;
 try
     %% Tunning of the task
     
-    [ EP, Parameters ] = FORTE.Planning;
+    switch task_version
+        case {'implicit', 'explicit'}
+            [ EP, Parameters ] = FORTE.Planning_im_ex_plicit;
+        case 'forced_choice'
+            [ EP, Parameters ] = FORTE.Planning_forced_choice;
+    end
     TaskData.Parameters = Parameters;
     
     % End of preparations
@@ -17,7 +22,7 @@ try
     %% Prepare event record and keybinf logger
     
     % [ ER, RR, KL, SR ] = Common.PrepareRecorders( EP );
-    [ ER, RR, KL, BR ] = Common.PrepareRecorders( EP, Parameters );
+    [ ER, RR, KL, BR ] = Common.PrepareRecorders( EP, Parameters, task_version );
     
     % This is a pointer copy, not a deep copy
     S.EP = EP;
@@ -31,7 +36,7 @@ try
     
     FIXATION    = FORTE.Prepare.Fixation;
     INSTRUCTION = FORTE.Prepare.Instruction(FIXATION);
-    OUTCOME     = FORTE.Prepare.Outcome;
+    OUTCOME     = FORTE.Prepare.Outcome( task_version );
     
     
     %% Eyelink
@@ -71,9 +76,16 @@ try
                 trial          = EP.Data{evt,7};
                 totalmaxreward = EP.Data{evt,8};
                 
+                
                 % log
-                fprintf('block=%2.d/%2.d   trial=%2.d/10   [%s]   %4s   ',...
-                    block, Parameters.nBlock, trial, num2str(triplet), reward)
+                switch task_version
+                    case {'implicit', 'explicit'}
+                        fprintf('block=%2.d/%2.d   trial=%2.d/10   [%s]   %4s   ',...
+                            block, Parameters.nBlock, trial, num2str(triplet), reward)
+                    case 'forced_choice'
+                        fprintf('[%s]   %4s   ',...
+                            num2str(triplet), reward)
+                end
                 
                 FIXATION.Draw();
                 
@@ -120,8 +132,10 @@ try
                             case 'low'
                                 OUTCOME.low_reward.Draw();
                         end
+                    otherwise
+                        error('something went wring with workflow if task_version=%s', task_version)
                 end
-                    
+                
                 
                 INSTRUCTION.Draw( triplet );
                 
@@ -291,6 +305,88 @@ try
                 end
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 
+                
+            case 'ForcedChoice' %------------------------------------------
+                
+                is_good = 0;
+                is_bad  = 0;
+                is_max  = 0;
+                
+                FIXATION.Draw();
+                INSTRUCTION.Draw( triplet );
+                OUTCOME.high_reward.Draw();
+                OUTCOME.low_reward.Draw();
+                
+                onset_forcedchoice = Screen('Flip', S.PTB.wPtr);
+                ER.AddEvent({EP.Data{evt,1} onset_forcedchoice-StartTime [] EP.Data{evt,4:end}});
+                
+                when = onset_forcedchoice + Parameters.MaxTime - S.PTB.slack;
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                secs = onset_forcedchoice;
+                while secs < when
+                    
+                    % SR.AddSample([secs-StartTime 0 0])
+                    
+                    % Fetch keys
+                    [keyIsDown, secs, keyCode] = KbCheck;
+                    
+                    if keyIsDown
+                        % ~~~ ESCAPE key ? ~~~
+                        [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
+                        if EXIT
+                            break
+                        end
+                        
+                        if     keyCode(S.Parameters.Fingers.Vect(  1))
+                            switch reward
+                                case 'high'
+                                    is_good = 1;
+                                    nGood = nGood + 1;
+                                    break
+                                case 'low'
+                                    is_bad  = 1;
+                                    nBad = nBad + 1;
+                                    break
+                            end
+                            
+                        elseif keyCode(S.Parameters.Fingers.Vect(end))
+                            switch reward
+                                case 'high'
+                                    is_bad  = 1;
+                                    nBad = nBad + 1;
+                                    break
+                                case 'low'
+                                    is_good = 1;
+                                    nGood = nGood + 1;
+                                    break
+                            end
+                            
+                        end
+                        
+                    end
+                    
+                end % while
+                if EXIT
+                    break
+                end
+                
+                if secs >= when
+                    is_max = 1;
+                    nMax = nMax + 1;
+                end
+                nTot = nTot + 1;
+                
+                BR.AddEvent({nTot triplet reward  is_good is_bad is_max ...
+                    onset_fixation-StartTime onset_forcedchoice-StartTime secs-StartTime });
+                
+                % log
+                fprintf(' G=%3d-%3d%%   B=%3d-%3d%%   M=%3d-%3d%%   \n',...
+                    nGood, round(100*nGood/nTot),...
+                    nBad , round(100*nBad /nTot),...
+                    nMax , round(100*nMax /nTot)...
+                    )
+                
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 
             otherwise % ---------------------------------------------------
                 

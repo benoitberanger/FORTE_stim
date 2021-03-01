@@ -1,4 +1,4 @@
-function [ outcome ] = Outcome( )
+function [ outcome ] = Outcome( task_version )
 global S
 
 outcome = Outcome( ...
@@ -22,8 +22,14 @@ scale = S.PTB.wRect(4)/outcome.low_reward.baseRect(4) * outcome.dimension_ratio;
 outcome.low_reward.Rescale(scale);
 
 % Move
-outcome.high_reward.Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
-outcome.low_reward. Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
+switch task_version
+    case {'implicit', 'explicit'}
+        outcome.high_reward.Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
+        outcome.low_reward. Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
+    case 'forced_choice'
+        outcome.high_reward.Move([outcome.screen_center_px(1)*0.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
+        outcome.low_reward. Move([outcome.screen_center_px(1)*1.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
+end
 
 outcome.total.LinkToWindowPtr( S.PTB.wPtr );
 outcome.total.Yptb = S.PTB.wRect(4) * S.Parameters.Forte.Outcome.y_offcet_ratio_txt;

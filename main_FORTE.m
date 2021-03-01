@@ -44,7 +44,7 @@ switch get(hObject,'Tag')
         
     case 'pushbutton_FORTE_forced_choice'
         Task = 'FORTE_forced_choice';
-        
+
     case 'pushbutton_EyelinkCalibration'
         Task = 'EyelinkCalibration';
         
@@ -109,6 +109,42 @@ end
 
 % Prepare path
 DataPath = [fileparts(pwd) filesep 'data' filesep SubjectID filesep];
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Special case, fetch last data for "forced_choice"
+
+switch Task
+    
+    case 'FORTE_implicit'
+        % pass
+        
+    case 'FORTE_explicit'
+        % pass
+        
+    case 'FORTE_forced_choice'
+        
+        assert( exist(DataPath,'dir') == 7, '%s dir does not exist. Run "implicit" or "explicit first"', DataPath )
+        
+        LastFileName = get(handles.text_LastFileName,'String');
+        if isempty(LastFileName)
+            LastFileName = uigetfile( sprintf( '%s*mat',DataPath ) );
+            if  LastFileName==0
+                warning('file not selected')
+                return
+            else
+                set(handles.text_LastFileNameAnnouncer, 'Visible','on'         )
+                set(handles.text_LastFileName         , 'Visible','on'         )
+                set(handles.text_LastFileName         , 'String' , LastFileName)
+            end
+        end
+        
+        content = load( fullfile(DataPath,LastFileName ) );
+        S.randomized_triplet_reward = content.S.TaskData.Parameters.randomized_triplet_reward;
+        
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 if strcmp(SaveMode,'SaveData') && strcmp(OperationMode,'Acquisition')
     
@@ -364,7 +400,11 @@ end
 
 set(handles.text_LastFileNameAnnouncer, 'Visible','on'                             )
 set(handles.text_LastFileName         , 'Visible','on'                             )
-set(handles.text_LastFileName         , 'String' , DataFile(length(DataPath)+1:end))
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if ~strcmp( Task, 'FORTE_forced_choice' )
+    set(handles.text_LastFileName         , 'String' , DataFile(length(DataPath)+1:end))
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 WaitSecs(0.100);
 pause(0.100);
