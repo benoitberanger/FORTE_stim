@@ -3,9 +3,9 @@ function GenerateCoords( obj )
 % Fetch some useful values
 x_pos = obj.x_pos;
 y_pos = obj.y_pos;
-yc = obj.screen_center_px(2);
+ys = obj.screen_size_px(2);
 
-sz = yc * obj.diameter_ratio;
+sz = ys * obj.diameter_ratio;
 base_rect = [0 0 sz sz];
 
 for i = 1 : 5

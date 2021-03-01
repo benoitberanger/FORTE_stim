@@ -1,4 +1,4 @@
-function [ TaskData ] = Task
+function [ TaskData ] = Task( task_version )
 global S
 
 S.PTB.slack = 0.001;
@@ -108,6 +108,20 @@ try
             case 'Instruction' % ------------------------------------------
                 
                 FIXATION.Draw();
+                
+                switch task_version
+                    case 'implicit'
+                        % pass, don't show the reward
+                    case 'explicit'
+                        % show the reward
+                        switch reward
+                            case 'high'
+                                OUTCOME.high_reward.Draw();
+                            case 'low'
+                                OUTCOME.low_reward.Draw();
+                        end
+                end
+                    
                 
                 INSTRUCTION.Draw( triplet );
                 

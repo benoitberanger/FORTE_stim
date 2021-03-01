@@ -7,7 +7,8 @@ classdef Fixation < baseObject
         
         % Parameters
         
-        screen_center_px   = zeros(0,2) % [ CenterX CenterY ], in pixels
+        screen_size_px     = zeros(0,2) % [     screen_size_x     screen_size_y ], in pixels
+        fixation_center_px = zeros(0,2) % [ fixation center_x fixation_center_y ], in pixels
         spacing_x_ratio    = zeros(0,1) % 0 to 1
         spacing_y_ratio    = zeros(0,1) % 0 to 1
         dimension_ratio    = zeros(0,1) % 0 to 1
@@ -30,14 +31,15 @@ classdef Fixation < baseObject
         % -----------------------------------------------------------------
         %                           Constructor
         % -----------------------------------------------------------------
-        function obj = Fixation( screen_center_px, spacing_x_ratio, spacing_y_ratio, dimension_ratio, width_height_ratio, color )
+        function obj = Fixation( screen_size_px, fixation_center_px, spacing_x_ratio, spacing_y_ratio, dimension_ratio, width_height_ratio, color )
             
             % ================ Check input argument =======================
             
             % Arguments ?
             if nargin > 0
                 
-                obj.screen_center_px   = screen_center_px;
+                obj.screen_size_px     = screen_size_px;
+                obj.fixation_center_px = fixation_center_px;
                 obj.spacing_x_ratio    = spacing_x_ratio;
                 obj.spacing_y_ratio    = spacing_y_ratio;
                 obj.dimension_ratio    = dimension_ratio;

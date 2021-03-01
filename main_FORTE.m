@@ -36,8 +36,14 @@ S.TimeStampFile = datestr(now, 30                ); % to sort automatically by t
 
 switch get(hObject,'Tag')
     
-    case 'pushbutton_FORTE'
-        Task = 'FORTE';
+    case 'pushbutton_FORTE_implicit'
+        Task = 'FORTE_implicit';
+        
+    case 'pushbutton_FORTE_explicit'
+        Task = 'FORTE_explicit';
+        
+    case 'pushbutton_FORTE_forced_choice'
+        Task = 'FORTE_forced_choice';
         
     case 'pushbutton_EyelinkCalibration'
         Task = 'EyelinkCalibration';
@@ -277,8 +283,14 @@ EchoStart(Task)
 
 switch Task
     
-    case 'FORTE'
-        TaskData = FORTE.Task;
+    case 'FORTE_implicit'
+        TaskData = FORTE.Task('implicit');
+        
+    case 'FORTE_explicit'
+        TaskData = FORTE.Task('explicit');
+        
+    case 'FORTE_forced_choice'
+        TaskData = FORTE.Task('forced_choice');
         
     case 'EyelinkCalibration'
         Eyelink.Calibration(S.PTB.wPtr);

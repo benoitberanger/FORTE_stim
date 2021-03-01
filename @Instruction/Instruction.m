@@ -7,7 +7,7 @@ classdef Instruction < baseObject
         
         % Parameters
         
-        screen_center_px   = zeros(0,2)  % from FIXATION
+        screen_size_px     = zeros(0,2)  % from FIXATION
         x_pos              = zeros(1,5); % from FIXATION
         y_pos              = zeros(1,5); % from FIXATION
         
@@ -37,7 +37,7 @@ classdef Instruction < baseObject
             % Arguments ?
             if nargin > 0
                 
-                obj.screen_center_px   = FIXATION.screen_center_px;
+                obj.screen_size_px     = FIXATION.screen_size_px;
                 obj.x_pos              = FIXATION.x_pos;
                 obj.y_pos              = FIXATION.y_pos;
 

@@ -1,14 +1,16 @@
 function GenerateCoords( obj )
 
-xc = obj.screen_center_px(1);
-yc = obj.screen_center_px(2);
+xs = obj.screen_size_px(1);
+ys = obj.screen_size_px(2);   % screen height is my unit of measure, it's the unitary dimension = 1.0
+xf = obj.fixation_center_px(1);
+yf = obj.fixation_center_px(2);
 
-x_pos = [xc xc xc xc xc] +  [-2 -1  0 +1 +2] * yc*2 * obj.spacing_x_ratio;
-y_pos = [yc yc yc yc yc] + -[-1  0 +1  0 -1] * yc*2 * obj.spacing_y_ratio;
+x_pos = [xf xf xf xf xf] +  [-2 -1  0 +1 +2] * ys * obj.spacing_x_ratio;
+y_pos = [yf yf yf yf yf] + -[-1  0 +1  0 -1] * ys * obj.spacing_y_ratio;
 obj.x_pos = x_pos;
 obj.y_pos = y_pos;
 
-sz = yc * obj.dimension_ratio;
+sz = ys * obj.dimension_ratio;
 r  = obj.width_height_ratio;
 
 base_rect_x = [0 0 sz   sz*r];
