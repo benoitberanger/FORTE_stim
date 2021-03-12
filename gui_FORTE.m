@@ -5,7 +5,7 @@ function varargout = gui_FORTE
 
 % debug=1 closes previous figure and reopens it, and send the gui handles
 % to base workspace.
-debug = 0;
+debug = 1;
 
 
 %% Open a singleton figure, or gring the actual into focus.
@@ -64,7 +64,7 @@ else % Create the figure
     
     panelProp.interWidth = 0.01;
     panelProp.vect  = ...
-        [0.75 2 1 0.75 1.5 ]; % relative proportions of each panel, from bottom to top
+        [0.75 2 2 1 0.75 1.5 ]; % relative proportions of each panel, from bottom to top
     
     panelProp.vectLength    = length(panelProp.vect);
     panelProp.vectTotal     = sum(panelProp.vect);
@@ -91,8 +91,8 @@ else % Create the figure
     
     p_sr.nbO       = 3; % Number of objects
     p_sr.Ow        = 1/(p_sr.nbO + 1); % Object width
-    p_sr.countO    = 0; % Object counter
-    p_sr.xposO     = @(countO) p_sr.Ow/(p_sr.nbO+1)*countO + (countO-1)*p_sr.Ow;
+    p_sr.count    = 0; % Object counter
+    p_sr.xpos     = @(count) p_sr.Ow/(p_sr.nbO+1)*count + (count-1)*p_sr.Ow;
     p_sr.yposOmain = 0.1;
     p_sr.hOmain    = 0.6;
     p_sr.yposOhdr  = 0.7;
@@ -102,8 +102,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Edit : Subject ID
     
-    p_sr.countO = p_sr.countO + 1;
-    e_sid.x = p_sr.xposO(p_sr.countO);
+    p_sr.count = p_sr.count + 1;
+    e_sid.x = p_sr.xpos(p_sr.count);
     e_sid.y = p_sr.yposOmain ;
     e_sid.w = p_sr.Ow;
     e_sid.h = p_sr.hOmain;
@@ -119,7 +119,7 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Text : Subject ID
     
-    t_sid.x = p_sr.xposO(p_sr.countO);
+    t_sid.x = p_sr.xpos(p_sr.count);
     t_sid.y = p_sr.yposOhdr ;
     t_sid.w = p_sr.Ow;
     t_sid.h = p_sr.hOhdr;
@@ -134,8 +134,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Pushbutton : Check SubjectID data
     
-    p_sr.countO = p_sr.countO + 1;
-    b_csidd.x = p_sr.xposO(p_sr.countO);
+    p_sr.count = p_sr.count + 1;
+    b_csidd.x = p_sr.xpos(p_sr.count);
     b_csidd.y = p_sr.yposOmain;
     b_csidd.w = p_sr.Ow;
     b_csidd.h = p_sr.hOmain;
@@ -152,8 +152,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Text : Last file name annoucer
     
-    p_sr.countO = p_sr.countO + 1;
-    t_lfna.x = p_sr.xposO(p_sr.countO);
+    p_sr.count = p_sr.count + 1;
+    t_lfna.x = p_sr.xpos(p_sr.count);
     t_lfna.y = p_sr.yposOhdr ;
     t_lfna.w = p_sr.Ow;
     t_lfna.h = p_sr.hOhdr;
@@ -169,7 +169,7 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Text : Last file name
     
-    t_lfn.x = p_sr.xposO(p_sr.countO);
+    t_lfn.x = p_sr.xpos(p_sr.count);
     t_lfn.y = p_sr.yposOmain ;
     t_lfn.w = p_sr.Ow;
     t_lfn.h = p_sr.hOmain;
@@ -199,15 +199,15 @@ else % Create the figure
     
     p_sm.nbO    = 2; % Number of objects
     p_sm.Ow     = 1/(p_sm.nbO + 1); % Object width
-    p_sm.countO = 0; % Object counter
-    p_sm.xposO  = @(countO) p_sm.Ow/(p_sm.nbO+1)*countO + (countO-1)*p_sm.Ow;
+    p_sm.count = 0; % Object counter
+    p_sm.xpos  = @(count) p_sm.Ow/(p_sm.nbO+1)*count + (count-1)*p_sm.Ow;
     
     
     % ---------------------------------------------------------------------
     % RadioButton : Save Data
     
-    p_sm.countO = p_sm.countO + 1;
-    r_sd.x   = p_sm.xposO(p_sm.countO);
+    p_sm.count = p_sm.count + 1;
+    r_sd.x   = p_sm.xpos(p_sm.count);
     r_sd.y   = 0.1 ;
     r_sd.w   = p_sm.Ow;
     r_sd.h   = 0.8;
@@ -226,8 +226,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % RadioButton : No save
     
-    p_sm.countO = p_sm.countO + 1;
-    r_ns.x   = p_sm.xposO(p_sm.countO);
+    p_sm.count = p_sm.count + 1;
+    r_ns.x   = p_sm.xpos(p_sm.count);
     r_ns.y   = 0.1 ;
     r_ns.w   = p_sm.Ow;
     r_ns.h   = 0.8;
@@ -260,15 +260,15 @@ else % Create the figure
     %
     %     p_env.nbO    = 2; % Number of objects
     %     p_env.Ow     = 1/(p_env.nbO + 1); % Object width
-    %     p_env.countO = 0; % Object counter
-    %     p_env.xposO  = @(countO) p_env.Ow/(p_env.nbO+1)*countO + (countO-1)*p_env.Ow;
+    %     p_env.count = 0; % Object counter
+    %     p_env.xpos  = @(count) p_env.Ow/(p_env.nbO+1)*count + (count-1)*p_env.Ow;
     %
     %
     %     % ---------------------------------------------------------------------
     %     % RadioButton : MRI
     %
-    %     p_env.countO = p_env.countO + 1;
-    %     r_mri.x   = p_env.xposO(p_env.countO);
+    %     p_env.count = p_env.count + 1;
+    %     r_mri.x   = p_env.xpos(p_env.count);
     %     r_mri.y   = 0.1 ;
     %     r_mri.w   = p_env.Ow;
     %     r_mri.h   = 0.8;
@@ -287,8 +287,8 @@ else % Create the figure
     %     % ---------------------------------------------------------------------
     %     % RadioButton : Practice
     %
-    %     p_env.countO = p_env.countO + 1;
-    %     r_practice.x   = p_env.xposO(p_env.countO);
+    %     p_env.count = p_env.count + 1;
+    %     r_practice.x   = p_env.xpos(p_env.count);
     %     r_practice.y   = 0.1 ;
     %     r_practice.w   = p_env.Ow;
     %     r_practice.h   = 0.8;
@@ -321,15 +321,15 @@ else % Create the figure
     %
     %     p_pplr.nbO    = 2; % Number of objects
     %     p_pplr.Ow     = 1/(p_pplr.nbO + 1); % Object width
-    %     p_pplr.countO = 0; % Object counter
-    %     p_pplr.xposO  = @(countO) p_pplr.Ow/(p_pplr.nbO+1)*countO + (countO-1)*p_pplr.Ow;
+    %     p_pplr.count = 0; % Object counter
+    %     p_pplr.xpos  = @(count) p_pplr.Ow/(p_pplr.nbO+1)*count + (count-1)*p_pplr.Ow;
     %
     %
     %     % ---------------------------------------------------------------------
     %     % RadioButton : Left buttons
     %
-    %     p_pplr.countO = p_pplr.countO + 1;
-    %     r_left.x   = p_pplr.xposO(p_pplr.countO);
+    %     p_pplr.count = p_pplr.count + 1;
+    %     r_left.x   = p_pplr.xpos(p_pplr.count);
     %     r_left.y   = 0.1 ;
     %     r_left.w   = p_pplr.Ow;
     %     r_left.h   = 0.8;
@@ -348,8 +348,8 @@ else % Create the figure
     %     % ---------------------------------------------------------------------
     %     % RadioButton : Right buttons
     %
-    %     p_pplr.countO = p_pplr.countO + 1;
-    %     r_right.x   = p_pplr.xposO(p_pplr.countO);
+    %     p_pplr.count = p_pplr.count + 1;
+    %     r_right.x   = p_pplr.xpos(p_pplr.count);
     %     r_right.y   = 0.1 ;
     %     r_right.w   = p_pplr.Ow;
     %     r_right.h   = 0.8;
@@ -444,16 +444,16 @@ else % Create the figure
     
     p_el_up.nbO    = 6; % Number of objects
     p_el_up.Ow     = 1/(p_el_up.nbO + 1); % Object width
-    p_el_up.countO = 0; % Object counter
-    p_el_up.xposO  = @(countO) p_el_up.Ow/(p_el_up.nbO+1)*countO + (countO-1)*p_el_up.Ow;
+    p_el_up.count = 0; % Object counter
+    p_el_up.xpos  = @(count) p_el_up.Ow/(p_el_up.nbO+1)*count + (count-1)*p_el_up.Ow;
     p_el_up.y      = 0.6;
     p_el_up.h      = 0.3;
     
     % ---------------------------------------------------------------------
     % RadioButton : Eyelink ON
     
-    p_el_up.countO = p_el_up.countO + 1;
-    r_elon.x   = p_el_up.xposO(p_el_up.countO);
+    p_el_up.count = p_el_up.count + 1;
+    r_elon.x   = p_el_up.xpos(p_el_up.count);
     r_elon.y   = p_el_up.y ;
     r_elon.w   = p_el_up.Ow;
     r_elon.h   = p_el_up.h;
@@ -472,8 +472,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % RadioButton : Eyelink OFF
     
-    p_el_up.countO = p_el_up.countO + 1;
-    r_eloff.x   = p_el_up.xposO(p_el_up.countO);
+    p_el_up.count = p_el_up.count + 1;
+    r_eloff.x   = p_el_up.xpos(p_el_up.count);
     r_eloff.y   = p_el_up.y ;
     r_eloff.w   = p_el_up.Ow;
     r_eloff.h   = p_el_up.h;
@@ -492,8 +492,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Checkbox : Parallel port
     
-    p_el_up.countO = p_el_up.countO + 1;
-    c_pp.x = p_el_up.xposO(p_el_up.countO);
+    p_el_up.count = p_el_up.count + 1;
+    c_pp.x = p_el_up.xpos(p_el_up.count);
     c_pp.y = p_el_up.y ;
     c_pp.w = p_el_up.Ow*2;
     c_pp.h = p_el_up.h;
@@ -515,8 +515,8 @@ else % Create the figure
     
     p_el_dw.nbO    = 4.5; % Number of objects
     p_el_dw.Ow     = 1/(p_el_dw.nbO + 1); % Object width
-    p_el_dw.countO = 0; % Object counter
-    p_el_dw.xposO  = @(countO) p_el_dw.Ow/(p_el_dw.nbO+1)*countO + (countO-1)*p_el_dw.Ow;
+    p_el_dw.count = 0; % Object counter
+    p_el_dw.xpos  = @(count) p_el_dw.Ow/(p_el_dw.nbO+1)*count + (count-1)*p_el_dw.Ow;
     p_el_dw.y      = 0.1;
     p_el_dw.h      = 0.4 ;
     
@@ -524,8 +524,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Pushbutton : Eyelink Initialize
     
-    p_el_dw.countO = p_el_dw.countO + 1;
-    b_init.x = p_el_dw.xposO(p_el_dw.countO);
+    p_el_dw.count = p_el_dw.count + 1;
+    b_init.x = p_el_dw.xpos(p_el_dw.count);
     b_init.y = p_el_dw.y ;
     b_init.w = p_el_dw.Ow;
     b_init.h = p_el_dw.h;
@@ -540,8 +540,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Pushbutton : Eyelink IsConnected
     
-    p_el_dw.countO = p_el_dw.countO + 1;
-    b_isco.x = p_el_dw.xposO(p_el_dw.countO);
+    p_el_dw.count = p_el_dw.count + 1;
+    b_isco.x = p_el_dw.xpos(p_el_dw.count);
     b_isco.y = p_el_dw.y ;
     b_isco.w = p_el_dw.Ow;
     b_isco.h = p_el_dw.h;
@@ -557,8 +557,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Pushbutton : Eyelink Calibration
     
-    p_el_dw.countO = p_el_dw.countO + 1;
-    b_cal.x   = p_el_dw.xposO(p_el_dw.countO);
+    p_el_dw.count = p_el_dw.count + 1;
+    b_cal.x   = p_el_dw.xpos(p_el_dw.count);
     b_cal.y   = p_el_dw.y ;
     b_cal.w   = p_el_dw.Ow;
     b_cal.h   = p_el_dw.h;
@@ -576,8 +576,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % Pushbutton : Download EL files according to the SubjectID
     
-    p_el_dw.countO = p_el_dw.countO + 1;
-    b_cal.x   = p_el_dw.xposO(p_el_dw.countO);
+    p_el_dw.count = p_el_dw.count + 1;
+    b_cal.x   = p_el_dw.xpos(p_el_dw.count);
     b_cal.y   = p_el_dw.y ;
     b_cal.w   = p_el_dw.Ow*1.5;
     b_cal.h   = p_el_dw.h;
@@ -608,75 +608,215 @@ else % Create the figure
         'Callback','Eyelink.ForceShutDown');
     
     
-    %% Panel : Task
+    %% Panel : Task_(mouse|joystick)
+
+    panelProp.countP = panelProp.countP - 1;
+    
+    p_task_motor.x = panelProp.xposP;
+    p_task_motor.w = panelProp.wP;
+    
+    p_task_motor.y = panelProp.yposP(panelProp.countP);
+    p_task_motor.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    
+    handles.uipanel_Task_motor = uibuttongroup(handles.(mfilename),...
+        'Title','Task mouse/joystick',...
+        'Units', 'Normalized',...
+        'Position',[p_task_motor.x p_task_motor.y p_task_motor.w p_task_motor.h],...
+        'BackgroundColor',figureBGcolor);
+    
+    p_task_motor = Object_Xpos_Xwidth_dispatcher( p_task_motor, [1 1 1 1] , 0.05 );
+
+    % ---------------------------------------------------------------------
+    % Pushbutton : FORTE_mouse_implicit
+    
+    p_task_motor.count  = p_task_motor.count + 1;
+    b_FORTE_mouse_implicit.x   = p_task_motor.xpos(p_task_motor.count);
+    b_FORTE_mouse_implicit.y   = 0.50;
+    b_FORTE_mouse_implicit.w   = p_task_motor.xwidth(p_task_motor.count);
+    b_FORTE_mouse_implicit.h   = 0.40;
+    b_FORTE_mouse_implicit.tag = 'pushbutton_FORTE_mouse_implicit';
+    handles.(b_FORTE_mouse_implicit.tag) = uicontrol(handles.uipanel_Task_motor,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_FORTE_mouse_implicit.x b_FORTE_mouse_implicit.y b_FORTE_mouse_implicit.w b_FORTE_mouse_implicit.h],...
+        'String','MOUSE implicit',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_FORTE_mouse_implicit.tag,...
+        'Callback',@pushbutton_FORTE_Callback,...
+        'FontSize',8);
+    
+    
+    % ---------------------------------------------------------------------
+    % Pushbutton : FORTE_mouse_explicit
+    
+    p_task_motor.count  = p_task_motor.count + 1;
+    b_FORTE_mouse_explicit.x   = p_task_motor.xpos(p_task_motor.count);
+    b_FORTE_mouse_explicit.y   = 0.50;
+    b_FORTE_mouse_explicit.w   = p_task_motor.xwidth(p_task_motor.count);
+    b_FORTE_mouse_explicit.h   = 0.40;
+    b_FORTE_mouse_explicit.tag = 'pushbutton_FORTE_mouse_explicit';
+    handles.(b_FORTE_mouse_explicit.tag) = uicontrol(handles.uipanel_Task_motor,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_FORTE_mouse_explicit.x b_FORTE_mouse_explicit.y b_FORTE_mouse_explicit.w b_FORTE_mouse_explicit.h],...
+        'String','MOUSE explicit',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_FORTE_mouse_explicit.tag,...
+        'Callback',@pushbutton_FORTE_Callback,...
+        'FontSize',8);
+    
+    
+    % ---------------------------------------------------------------------
+    % Pushbutton : FORTE_joystick_implicit
+    
+    p_task_motor.count  = p_task_motor.count + 1;
+    b_FORTE_joystick_implicit.x   = p_task_motor.xpos(p_task_motor.count);
+    b_FORTE_joystick_implicit.y   = 0.50;
+    b_FORTE_joystick_implicit.w   = p_task_motor.xwidth(p_task_motor.count);
+    b_FORTE_joystick_implicit.h   = 0.40;
+    b_FORTE_joystick_implicit.tag = 'pushbutton_FORTE_joystick_implicit';
+    handles.(b_FORTE_joystick_implicit.tag) = uicontrol(handles.uipanel_Task_motor,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_FORTE_joystick_implicit.x b_FORTE_joystick_implicit.y b_FORTE_joystick_implicit.w b_FORTE_joystick_implicit.h],...
+        'String','JOYSTICK implicit',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_FORTE_joystick_implicit.tag,...
+        'Callback',@pushbutton_FORTE_Callback,...
+        'FontSize',8);
+    
+    
+    % ---------------------------------------------------------------------
+    % Pushbutton : FORTE_joystick_explicit
+    
+    p_task_motor.count  = p_task_motor.count + 1;
+    b_FORTE_joystick_explicit.x   = p_task_motor.xpos(p_task_motor.count);
+    b_FORTE_joystick_explicit.y   = 0.50;
+    b_FORTE_joystick_explicit.w   = p_task_motor.xwidth(p_task_motor.count);
+    b_FORTE_joystick_explicit.h   = 0.40;
+    b_FORTE_joystick_explicit.tag = 'pushbutton_FORTE_joystick_explicit';
+    handles.(b_FORTE_joystick_explicit.tag) = uicontrol(handles.uipanel_Task_motor,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_FORTE_joystick_explicit.x b_FORTE_joystick_explicit.y b_FORTE_joystick_explicit.w b_FORTE_joystick_explicit.h],...
+        'String','JOYSTICK explicit',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_FORTE_joystick_explicit.tag,...
+        'Callback',@pushbutton_FORTE_Callback,...
+        'FontSize',8);
+    
+    
+    
+         % ---------------------------------------------------------------------
+    % Pushbutton : FORTE_motor_forced_choice
+    
+    p_task_motor.count  = p_task_motor.count + 1;
+    b_FORTE_motor_forced_choice.x   = 0.05;
+    b_FORTE_motor_forced_choice.y   = 0.05;
+    b_FORTE_motor_forced_choice.w   = 0.90;
+    b_FORTE_motor_forced_choice.h   = 0.45;
+    b_FORTE_motor_forced_choice.tag = 'pushbutton_FORTE_motor_forced_choice';
+    handles.(b_FORTE_motor_forced_choice.tag) = uicontrol(handles.uipanel_Task_motor,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_FORTE_motor_forced_choice.x b_FORTE_motor_forced_choice.y b_FORTE_motor_forced_choice.w b_FORTE_motor_forced_choice.h],...
+        'String','MOUSE/JOYSTICK foirced_choice',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_FORTE_motor_forced_choice.tag,...
+        'Callback',@pushbutton_FORTE_Callback,...
+        'FontSize',8);
+    
+    % ---------------------------------------------------------------------
+    % Pushbutton : plot_stats
+    
+    p_task_motor.count  = p_task_motor.count + 1;
+    b_plot_stats.x   = 0.90;
+    b_plot_stats.y   = 0.00;
+    b_plot_stats.w   = 0.10;
+    b_plot_stats.h   = 0.20;
+    b_plot_stats.tag = 'pushbutton_plot_stats';
+    handles.(b_plot_stats.tag) = uicontrol(handles.uipanel_Task_motor,...
+        'Style','pushbutton',...
+        'Units', 'Normalized',...
+        'Position',[b_plot_stats.x b_plot_stats.y b_plot_stats.w b_plot_stats.h],...
+        'String','plot_stats',...
+        'BackgroundColor',buttonBGcolor,...
+        'Tag',b_plot_stats.tag,...
+        'Callback',@pushbutton_plot_stats_GUIroutine,...
+        'ButtonDownFcn',@pushbuttonplot_stats_GUIroutine,...
+        'FontSize',8,...
+        'Tooltip','Left click : plot last data  //  Right click : open UI to load specific data');
+
+    
+    %% Panel : Task_keyboard
     
     panelProp.countP = panelProp.countP - 1;
     
-    p_task.x = panelProp.xposP;
-    p_task.w = panelProp.wP ;
+    p_task_keyboard.x = panelProp.xposP;
+    p_task_keyboard.w = panelProp.wP ;
     
-    p_task.y = panelProp.yposP(panelProp.countP);
-    p_task.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    p_task_keyboard.y = panelProp.yposP(panelProp.countP);
+    p_task_keyboard.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
     
-    handles.uipanel_Task = uibuttongroup(handles.(mfilename),...
-        'Title','Task',...
+    handles.uipanel_Task_keyboard = uibuttongroup(handles.(mfilename),...
+        'Title','Task keyboard',...
         'Units', 'Normalized',...
-        'Position',[p_task.x p_task.y p_task.w p_task.h],...
+        'Position',[p_task_keyboard.x p_task_keyboard.y p_task_keyboard.w p_task_keyboard.h],...
         'BackgroundColor',figureBGcolor);
     
-    p_task = Object_Xpos_Xwidth_dispatcher( p_task, [1 1] , 0.05 );
+    p_task_keyboard = Object_Xpos_Xwidth_dispatcher( p_task_keyboard, [1 1] , 0.05 );
     
     % ---------------------------------------------------------------------
     % Pushbutton : FORTE_implicit
     
-    p_task.count  = p_task.count + 1;
-    b_FORTE_implicit.x   = p_task.xpos(p_task.count);
-    b_FORTE_implicit.w   = p_task.xwidth(p_task.count);
-    b_FORTE_implicit.y   = 0.55;
-    b_FORTE_implicit.h   = 0.45;
-    b_FORTE_implicit.tag = 'pushbutton_FORTE_implicit';
-    handles.(b_FORTE_implicit.tag) = uicontrol(handles.uipanel_Task,...
+    p_task_keyboard.count  = p_task_keyboard.count + 1;
+    b_FORTE_keyboard_implicit.x   = p_task_keyboard.xpos(p_task_keyboard.count);
+    b_FORTE_keyboard_implicit.w   = p_task_keyboard.xwidth(p_task_keyboard.count);
+    b_FORTE_keyboard_implicit.y   = 0.55;
+    b_FORTE_keyboard_implicit.h   = 0.45;
+    b_FORTE_keyboard_implicit.tag = 'pushbutton_FORTE_keyboard_implicit';
+    handles.(b_FORTE_keyboard_implicit.tag) = uicontrol(handles.uipanel_Task_keyboard,...
         'Style','pushbutton',...
         'Units', 'Normalized',...
-        'Position',[b_FORTE_implicit.x b_FORTE_implicit.y b_FORTE_implicit.w b_FORTE_implicit.h],...
-        'String','FORTE_implicit',...
+        'Position',[b_FORTE_keyboard_implicit.x b_FORTE_keyboard_implicit.y b_FORTE_keyboard_implicit.w b_FORTE_keyboard_implicit.h],...
+        'String','KEYBOARD implicit',...
         'BackgroundColor',buttonBGcolor,...
-        'Tag',b_FORTE_implicit.tag,...
+        'Tag',b_FORTE_keyboard_implicit.tag,...
         'Callback',@pushbutton_FORTE_Callback);
     
     % ---------------------------------------------------------------------
     % Pushbutton : FORTE_explicit
     
-    p_task.count  = p_task.count + 1;
-    b_FORTE_explicit.x   = p_task.xpos(p_task.count);
-    b_FORTE_explicit.w   = p_task.xwidth(p_task.count);
-    b_FORTE_explicit.y   = 0.55;
-    b_FORTE_explicit.h   = 0.45;
-    b_FORTE_explicit.tag = 'pushbutton_FORTE_explicit';
-    handles.(b_FORTE_explicit.tag) = uicontrol(handles.uipanel_Task,...
+    p_task_keyboard.count  = p_task_keyboard.count + 1;
+    b_FORTE_keyboard_explicit.x   = p_task_keyboard.xpos(p_task_keyboard.count);
+    b_FORTE_keyboard_explicit.w   = p_task_keyboard.xwidth(p_task_keyboard.count);
+    b_FORTE_keyboard_explicit.y   = 0.55;
+    b_FORTE_keyboard_explicit.h   = 0.45;
+    b_FORTE_keyboard_explicit.tag = 'pushbutton_FORTE_keyboard_explicit';
+    handles.(b_FORTE_keyboard_explicit.tag) = uicontrol(handles.uipanel_Task_keyboard,...
         'Style','pushbutton',...
         'Units', 'Normalized',...
-        'Position',[b_FORTE_explicit.x b_FORTE_explicit.y b_FORTE_explicit.w b_FORTE_explicit.h],...
-        'String','FORTE_explicit',...
+        'Position',[b_FORTE_keyboard_explicit.x b_FORTE_keyboard_explicit.y b_FORTE_keyboard_explicit.w b_FORTE_keyboard_explicit.h],...
+        'String','KEYBOARD explicit',...
         'BackgroundColor',buttonBGcolor,...
-        'Tag',b_FORTE_explicit.tag,...
+        'Tag',b_FORTE_keyboard_explicit.tag,...
         'Callback',@pushbutton_FORTE_Callback);
     
     % ---------------------------------------------------------------------
     % Pushbutton : FORTE_forced_choice
     
-    b_FORTE_forced_choice.x   = 0.30;
-    b_FORTE_forced_choice.w   = 0.40;
-    b_FORTE_forced_choice.y   = 0.05;
-    b_FORTE_forced_choice.h   = 0.45;
-    b_FORTE_forced_choice.tag = 'pushbutton_FORTE_forced_choice';
-    handles.(b_FORTE_forced_choice.tag) = uicontrol(handles.uipanel_Task,...
+    b_FORTE_keyboard_forced_choice.x   = 0.30;
+    b_FORTE_keyboard_forced_choice.w   = 0.40;
+    b_FORTE_keyboard_forced_choice.y   = 0.05;
+    b_FORTE_keyboard_forced_choice.h   = 0.45;
+    b_FORTE_keyboard_forced_choice.tag = 'pushbutton_FORTE_keyboard_forced_choice';
+    handles.(b_FORTE_keyboard_forced_choice.tag) = uicontrol(handles.uipanel_Task_keyboard,...
         'Style','pushbutton',...
         'Units', 'Normalized',...
-        'Position',[b_FORTE_forced_choice.x b_FORTE_forced_choice.y b_FORTE_forced_choice.w b_FORTE_forced_choice.h],...
-        'String','FORTE_forced_choice',...
+        'Position',[b_FORTE_keyboard_forced_choice.x b_FORTE_keyboard_forced_choice.y b_FORTE_keyboard_forced_choice.w b_FORTE_keyboard_forced_choice.h],...
+        'String','KEYBOARD forced_choice',...
         'BackgroundColor',buttonBGcolor,...
-        'Tag',b_FORTE_forced_choice.tag,...
+        'Tag',b_FORTE_keyboard_forced_choice.tag,...
         'Callback',@pushbutton_FORTE_Callback);
     
     
@@ -697,15 +837,15 @@ else % Create the figure
     
     p_op.nbO    = 3; % Number of objects
     p_op.Ow     = 1/(p_op.nbO + 1); % Object width
-    p_op.countO = 0; % Object counter
-    p_op.xposO  = @(countO) p_op.Ow/(p_op.nbO+1)*countO + (countO-1)*p_op.Ow;
+    p_op.count = 0; % Object counter
+    p_op.xpos  = @(count) p_op.Ow/(p_op.nbO+1)*count + (count-1)*p_op.Ow;
     
     
     % ---------------------------------------------------------------------
     % RadioButton : Acquisition
     
-    p_op.countO = p_op.countO + 1;
-    r_aq.x = p_op.xposO(p_op.countO);
+    p_op.count = p_op.count + 1;
+    r_aq.x = p_op.xpos(p_op.count);
     r_aq.y = 0.1 ;
     r_aq.w = p_op.Ow;
     r_aq.h = 0.8;
@@ -724,8 +864,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % RadioButton : FastDebug
     
-    p_op.countO = p_op.countO + 1;
-    r_fd.x   = p_op.xposO(p_op.countO);
+    p_op.count = p_op.count + 1;
+    r_fd.x   = p_op.xpos(p_op.count);
     r_fd.y   = 0.1 ;
     r_fd.w   = p_op.Ow;
     r_fd.h   = 0.8;
@@ -744,8 +884,8 @@ else % Create the figure
     % ---------------------------------------------------------------------
     % RadioButton : RealisticDebug
     
-    p_op.countO = p_op.countO + 1;
-    r_rd.x   = p_op.xposO(p_op.countO);
+    p_op.count = p_op.count + 1;
+    r_rd.x   = p_op.xpos(p_op.count);
     r_rd.y   = 0.1 ;
     r_rd.w   = p_op.Ow;
     r_rd.h   = 0.8;
@@ -851,7 +991,7 @@ handles = guidata(hObject);
 
 % Screen mode selection
 AvalableDisplays = get(handles.listbox_Screens,'String');
-SelectedDisplay = get(handles.listbox_Screens,'Value');
+SelectedDisplay  = get(handles.listbox_Screens,'Value' );
 wPtr = str2double( AvalableDisplays(SelectedDisplay) );
 
 Eyelink.OpenCalibration(wPtr);

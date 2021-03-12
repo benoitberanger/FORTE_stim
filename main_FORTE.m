@@ -36,14 +36,14 @@ S.TimeStampFile = datestr(now, 30                ); % to sort automatically by t
 
 switch get(hObject,'Tag')
     
-    case 'pushbutton_FORTE_implicit'
-        Task = 'FORTE_implicit';
+    case 'pushbutton_FORTE_keyboard_implicit'
+        Task = 'FORTE_keyboard_implicit';
         
-    case 'pushbutton_FORTE_explicit'
-        Task = 'FORTE_explicit';
+    case 'pushbutton_FORTE_keyboard_explicit'
+        Task = 'FORTE_keyboard_explicit';
         
-    case 'pushbutton_FORTE_forced_choice'
-        Task = 'FORTE_forced_choice';
+    case 'pushbutton_FORTE_keyboard_forced_choice'
+        Task = 'FORTE_keyboard_forced_choice';
 
     case 'pushbutton_EyelinkCalibration'
         Task = 'EyelinkCalibration';
@@ -115,13 +115,13 @@ DataPath = [fileparts(pwd) filesep 'data' filesep SubjectID filesep];
 
 switch Task
     
-    case 'FORTE_implicit'
+    case 'FORTE_keyboard_implicit'
         % pass
         
-    case 'FORTE_explicit'
+    case 'FORTE_keyboard_explicit'
         % pass
         
-    case 'FORTE_forced_choice'
+    case 'FORTE_keyboard_forced_choice'
         
         assert( exist(DataPath,'dir') == 7, '%s dir does not exist. Run "implicit" or "explicit first"', DataPath )
         
@@ -319,13 +319,13 @@ EchoStart(Task)
 
 switch Task
     
-    case 'FORTE_implicit'
+    case 'FORTE_keyboard_implicit'
         TaskData = FORTE.Task('implicit');
         
-    case 'FORTE_explicit'
+    case 'FORTE_keyboard_explicit'
         TaskData = FORTE.Task('explicit');
         
-    case 'FORTE_forced_choice'
+    case 'FORTE_keyboard_forced_choice'
         TaskData = FORTE.Task('forced_choice');
         
     case 'EyelinkCalibration'
@@ -401,7 +401,7 @@ end
 set(handles.text_LastFileNameAnnouncer, 'Visible','on'                             )
 set(handles.text_LastFileName         , 'Visible','on'                             )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ~strcmp( Task, 'FORTE_forced_choice' )
+if ~strcmp( Task, 'FORTE_keyboard_forced_choice' )
     set(handles.text_LastFileName         , 'String' , DataFile(length(DataPath)+1:end))
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

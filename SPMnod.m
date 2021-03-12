@@ -11,7 +11,7 @@ try
     % 'names' for SPM
     switch S.Task
         
-    case {'FORTE_implicit', 'FORTE_explicit', 'FORTE_forced_choice'}
+    case {'FORTE_keyboard_implicit', 'FORTE_keyboard_explicit', 'FORTE_keyboard_forced_choice'}
             names = {
                 };
             
