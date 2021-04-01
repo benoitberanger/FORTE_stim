@@ -5,7 +5,8 @@ if isempty( which('psychwavread') )
 else
     [signal obj.fs] = psychwavread(obj.filename);
 end
-obj.signal      = [signal';signal'];
+
+obj.signal      = [signal';signal'];       % use mono signal in both speakers (stereo)
 obj.time        = (0:1:length(obj.signal(1,:))-1)/obj.fs;
 obj.duration    = length(obj.signal)/obj.fs;
 

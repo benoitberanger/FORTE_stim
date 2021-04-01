@@ -83,6 +83,20 @@ end
 S.SaveMode = SaveMode;
 
 
+%% GUI : With sound ?
+
+switch get(get(handles.uipanel_with_sound,'SelectedObject'),'Tag')
+    case 'radiobutton_sound_on'
+        with_sound = 1;
+    case 'radiobutton_sound_off'
+        with_sound = 0;
+    otherwise
+        warning('FORTE:SaveSelection','Error in with_sound selection')
+end
+
+S.with_sound = with_sound;
+
+
 %% GUI : Mode selection
 
 switch get(get(handles.uipanel_OperationMode,'SelectedObject'),'Tag')

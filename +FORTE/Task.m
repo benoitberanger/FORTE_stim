@@ -34,10 +34,13 @@ try
     
     %% Prepare objects
     
-    FIXATION    = FORTE.Prepare.Fixation;
-    INSTRUCTION = FORTE.Prepare.Instruction(FIXATION);
+    FIXATION    = FORTE.Prepare.Fixation();
+    INSTRUCTION = FORTE.Prepare.Instruction( FIXATION );
     OUTCOME     = FORTE.Prepare.Outcome( task_version );
-    
+    if S.with_sound
+        CASH_SOUND  = FORTE.Prepare.Cash();
+        WHITE_NOISE = FORTE.Prepare.WhiteNoise( CASH_SOUND );
+    end
     
     %% Eyelink
     
@@ -244,6 +247,7 @@ try
                         nGood = nGood + 1;
                         logmsg = '';
                         OUTCOME.Draw();
+                        if S.with_sound, CASH_SOUND.Playback(); end
                         
                     case 0 % bad
                         
@@ -251,6 +255,7 @@ try
                         nBad = nBad+ 1;
                         logmsg = 'bad';
                         OUTCOME.Draw();
+                        if S.with_sound, WHITE_NOISE.Playback(); end
                         
                     case -1 % out of time
                         
@@ -258,6 +263,7 @@ try
                         nMax = nMax + 1;
                         logmsg = '!!! MaxTime reached !!!';
                         OUTCOME.Draw();
+                        if S.with_sound, WHITE_NOISE.Playback(); end
                         
                 end
                 nTot = nTot + 1;
@@ -405,7 +411,9 @@ try
     %% End of stimulation
     
     % Close the audio device
-    % PsychPortAudio('Close');
+    if S.with_sound
+        PsychPortAudio('Close');
+    end
     
     % TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime );
     TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, BR, StartTime, StopTime );

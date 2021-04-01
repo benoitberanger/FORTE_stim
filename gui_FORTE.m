@@ -5,7 +5,7 @@ function varargout = gui_FORTE
 
 % debug=1 closes previous figure and reopens it, and send the gui handles
 % to base workspace.
-debug = 1;
+debug = 0;
 
 
 %% Open a singleton figure, or gring the actual into focus.
@@ -64,7 +64,7 @@ else % Create the figure
     
     panelProp.interWidth = 0.01;
     panelProp.vect  = ...
-        [0.75 2 2 1 0.75 1.5 ]; % relative proportions of each panel, from bottom to top
+        [0.75 2 2 1 1 0.75 1.5 ]; % relative proportions of each panel, from bottom to top
     
     panelProp.vectLength    = length(panelProp.vect);
     panelProp.vectTotal     = sum(panelProp.vect);
@@ -608,6 +608,61 @@ else % Create the figure
         'Callback','Eyelink.ForceShutDown');
     
     
+    %% Panel : with sound ?
+    
+    p_with_sound.x = panelProp.xposP;
+    p_with_sound.w = panelProp.wP;
+    
+    panelProp.countP = panelProp.countP - 1;
+    p_with_sound.y = panelProp.yposP(panelProp.countP);
+    p_with_sound.h = panelProp.unitWidth*panelProp.vect(panelProp.countP);
+    
+    handles.uipanel_with_sound = uibuttongroup(handles.(mfilename),...
+        'Title','With sound ?',...
+        'Units', 'Normalized',...
+        'Position',[p_with_sound.x p_with_sound.y p_with_sound.w p_with_sound.h],...
+        'BackgroundColor',figureBGcolor);
+    
+    p_with_sound = Object_Xpos_Xwidth_dispatcher( p_with_sound, [1 1] , 0.05 );
+    
+    % ---------------------------------------------------------------------
+    % RadioButton : sound ON
+    
+    p_with_sound.count = p_with_sound.count + 1;
+    r_sound_on.x   = p_with_sound.xpos(p_with_sound.count);
+    r_sound_on.y   = 0.1 ;
+    r_sound_on.w   = p_with_sound.w;
+    r_sound_on.h   = 0.8;
+    r_sound_on.tag = 'radiobutton_sound_on';
+    handles.(r_sound_on.tag) = uicontrol(handles.uipanel_with_sound,...
+        'Style','radiobutton',...
+        'Units', 'Normalized',...
+        'Position',[r_sound_on.x r_sound_on.y r_sound_on.w r_sound_on.h],...
+        'String','On',...
+        'HorizontalAlignment','Center',...
+        'Tag',r_sound_on.tag,...
+        'BackgroundColor',figureBGcolor);
+    
+    
+    % ---------------------------------------------------------------------
+    % RadioButton : sound OFF
+    
+    p_with_sound.count = p_with_sound.count + 1;
+    r_sound_off.x   = p_with_sound.xpos(p_with_sound.count);
+    r_sound_off.y   = 0.1 ;
+    r_sound_off.w   = p_with_sound.w;
+    r_sound_off.h   = 0.8;
+    r_sound_off.tag = 'radiobutton_sound_off';
+    handles.(r_sound_off.tag) = uicontrol(handles.uipanel_with_sound,...
+        'Style','radiobutton',...
+        'Units', 'Normalized',...
+        'Position',[r_sound_off.x r_sound_off.y r_sound_off.w r_sound_off.h],...
+        'String','Off',...
+        'HorizontalAlignment','Center',...
+        'Tag',r_sound_off.tag,...
+        'BackgroundColor',figureBGcolor);
+    
+    
     %% Panel : Task_(mouse|joystick)
 
     panelProp.countP = panelProp.countP - 1;
@@ -818,6 +873,24 @@ else % Create the figure
         'BackgroundColor',buttonBGcolor,...
         'Tag',b_FORTE_keyboard_forced_choice.tag,...
         'Callback',@pushbutton_FORTE_Callback);
+    
+%     % ---------------------------------------------------------------------
+%     % Checkbox : with_sound
+%     
+%     c_with_sound.x   = 0.80;
+%     c_with_sound.y   = 0.00;
+%     c_with_sound.w   = 0.20;
+%     c_with_sound.h   = 0.20;
+%     c_with_sound.tag = 'checkbox_with_sound';
+%     handles.(c_with_sound.tag) = uicontrol(handles.uipanel_Task_keyboard,...
+%         'Style','checkbox',...
+%         'Units', 'Normalized',...
+%         'Position',[c_with_sound.x c_with_sound.y c_with_sound.w c_with_sound.h],...
+%         'String','with sound ?',...
+%         'Tag',c_with_sound.tag,...
+%         'BackgroundColor',figureBGcolor,...
+%         'FontSize',8,...
+%         'Tooltip','play Cash sound for reward & White noise for loss');
     
     
     %% Panel : Operation mode

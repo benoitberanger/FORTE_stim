@@ -48,7 +48,7 @@ classdef Fixation < baseObject
                 
                 % ================== Callback =============================
                 
-                obj.GenerateCoords
+                obj.GenerateCoords();
                 
             else
                 % Create empty instance
