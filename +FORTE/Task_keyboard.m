@@ -1,4 +1,4 @@
-function [ TaskData ] = Task( task_version )
+function [ TaskData ] = Task_keyboard( task_version )
 global S
 
 S.PTB.slack = 0.001;

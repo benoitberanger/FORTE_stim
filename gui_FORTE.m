@@ -762,7 +762,7 @@ else % Create the figure
     
     
     
-         % ---------------------------------------------------------------------
+    % ---------------------------------------------------------------------
     % Pushbutton : FORTE_motor_forced_choice
     
     p_task_motor.count  = p_task_motor.count + 1;

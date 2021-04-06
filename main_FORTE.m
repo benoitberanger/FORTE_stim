@@ -44,7 +44,24 @@ switch get(hObject,'Tag')
         
     case 'pushbutton_FORTE_keyboard_forced_choice'
         Task = 'FORTE_keyboard_forced_choice';
-
+        
+        
+    case 'pushbutton_FORTE_mouse_implicit'
+        Task = 'FORTE_mouse_implicit';
+        
+    case 'pushbutton_FORTE_mouse_explicit'
+        Task = 'FORTE_mouse_explicit';
+        
+    case 'pushbutton_FORTE_joystick_implicit'
+        Task = 'FORTE_joystick_implicit';
+        
+    case 'pushbutton_FORTE_joystick_explicit'
+        Task = 'FORTE_joystick_explicit';
+        
+    case 'pushbutton_FORTE_motor_forced_choice'
+        Task = 'FORTE_motor_forced_choice';
+        
+        
     case 'pushbutton_EyelinkCalibration'
         Task = 'EyelinkCalibration';
         
@@ -334,13 +351,34 @@ EchoStart(Task)
 switch Task
     
     case 'FORTE_keyboard_implicit'
-        TaskData = FORTE.Task('implicit');
+        TaskData = FORTE.Task_keyboard('implicit');
         
     case 'FORTE_keyboard_explicit'
-        TaskData = FORTE.Task('explicit');
+        TaskData = FORTE.Task_keyboard('explicit');
         
     case 'FORTE_keyboard_forced_choice'
-        TaskData = FORTE.Task('forced_choice');
+        TaskData = FORTE.Task_keyboard('forced_choice');
+        
+        
+    case 'FORTE_mouse_implicit'
+        S.InputMethod = 'Mouse';
+        TaskData = FORTE.Task_motor('implicit');
+        
+    case 'FORTE_mouse_explicit'
+        S.InputMethod = 'Mouse';
+        TaskData = FORTE.Task_motor('explicit');
+        
+    case 'FORTE_joystick_implicit'
+        S.InputMethod = 'Joystick';
+        TaskData = FORTE.Task_motor('implicit');
+        
+    case 'FORTE_joystick_explicit'
+        S.InputMethod = 'Joystick';
+        TaskData = FORTE.Task_motor('explicit');
+        
+    case 'FORTE_motor_forced_choice'
+        TaskData = FORTE.Task_motor('forced_choice');
+        
         
     case 'EyelinkCalibration'
         Eyelink.Calibration(S.PTB.wPtr);
