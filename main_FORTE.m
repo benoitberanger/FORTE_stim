@@ -146,13 +146,14 @@ DataPath = [fileparts(pwd) filesep 'data' filesep SubjectID filesep];
 
 switch Task
     
-    case 'FORTE_keyboard_implicit'
-        % pass
-        
+    % pass for 'implicit' & 'explicit'
+    case 'FORTE_keyboard_implicit'        
     case 'FORTE_keyboard_explicit'
-        % pass
-        
-    case 'FORTE_keyboard_forced_choice'
+    case 'FORTE_mouse_implicit'
+    case 'FORTE_mouse_explicit'
+    case 'FORTE_joystick_implicit'
+    case 'FORTE_joystick_explicit'
+    case {'FORTE_keyboard_forced_choice', 'FORTE_motor_forced_choice'}
         
         assert( exist(DataPath,'dir') == 7, '%s dir does not exist. Run "implicit" or "explicit first"', DataPath )
         
@@ -171,6 +172,10 @@ switch Task
         
         content = load( fullfile(DataPath,LastFileName ) );
         S.randomized_triplet_reward = content.S.TaskData.Parameters.randomized_triplet_reward;
+        
+        if strfind(Task, 'motor') %#ok<STRIFCND>
+            S.InputMethod = content.S.InputMethod;
+        end
         
 end
 

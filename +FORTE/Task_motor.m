@@ -34,16 +34,16 @@ try
     
     %% Prepare objects
     
-    OUTCOME     = FORTE.Prepare.Outcome( task_version );
+    OUTCOME         = FORTE.Prepare.Outcome( task_version );
     if S.with_sound
         CASH_SOUND  = FORTE.Prepare.Cash();
         WHITE_NOISE = FORTE.Prepare.WhiteNoise( CASH_SOUND );
     end
-    Cross          = FORTE.Prepare.Cross         ;
-    BigCircle      = FORTE.Prepare.BigCircle     ;
-    TargetCenter   = FORTE.Prepare.TargetCenter  ;
-    Cursor         = FORTE.Prepare.Cursor        ;
-    TargetFixation = FORTE.Prepare.TargetFixation;
+    Cross           = FORTE.Prepare.Cross         ;
+    BigCircle       = FORTE.Prepare.BigCircle     ;
+    TargetCenter    = FORTE.Prepare.TargetCenter  ;
+    Cursor          = FORTE.Prepare.Cursor        ;
+    TargetFixation  = FORTE.Prepare.TargetFixation;
     
     
     %% Eyelink
@@ -407,8 +407,12 @@ try
                 is_bad  = 0;
                 is_max  = 0;
                 
-                FIXATION.Draw();
-                INSTRUCTION.Draw( triplet );
+                BigCircle.Draw();
+                Cross.Draw();
+                TargetFixation.frameCurrentColor                     = TargetFixation.frameBaseColor;
+                TargetFixation.frameCurrentColor(:,logical(triplet)) = repmat( S.Parameters.Forte.Instruction.color', [1 3] );
+                TargetFixation.Draw();
+                
                 OUTCOME.high_reward.Draw();
                 OUTCOME.low_reward.Draw();
                 
@@ -478,7 +482,7 @@ try
                 fprintf(' G=%3d-%3d%%   B=%3d-%3d%%   M=%3d-%3d%%   \n',...
                     nGood, round(100*nGood/nTot),...
                     nBad , round(100*nBad /nTot),...
-                    nMax , round(100*nMax /nTot)...
+                    nMax , round(100*nMax /nTot) ...
                     )
                 
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
