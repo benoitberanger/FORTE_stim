@@ -246,7 +246,6 @@ try
                                         last_goback = 1;                                        
                                     end
                                     
-                                    
                                     last_good_target_onset = secs;
                                     
                                 else % Bad
@@ -283,6 +282,21 @@ try
                     
                     BigCircle.Draw();
                     TargetFixation.Draw();
+                    
+                    switch task_version
+                        case 'implicit'
+                            % pass, don't show the reward
+                        case 'explicit'
+                            % show the reward
+                            switch reward
+                                case 'high'
+                                    OUTCOME.high_reward.Draw();
+                                case 'low'
+                                    OUTCOME.low_reward.Draw();
+                            end
+                        otherwise
+                            error('something went wring with workflow if task_version=%s', task_version)
+                    end
                     
                     Cursor.Update(S.InputMethod);
                     Cursor.Draw();
