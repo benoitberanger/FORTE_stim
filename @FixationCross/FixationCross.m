@@ -15,7 +15,7 @@ classdef FixationCross < baseObject
         
         % Internal variables
         
-        allCoords = zeros(2,4) % coordinates of the cross for PTB, in pixels
+        allCoords = zeros(4,2) % coordinates of the cross for PTB, in pixels
         
     end % properties
     
@@ -59,7 +59,7 @@ classdef FixationCross < baseObject
                 
                 % ================== Callback =============================
                 
-                obj.GenerateCoords
+                obj.GenerateCoords();
                 
             else
                 % Create empty instance

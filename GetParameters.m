@@ -97,10 +97,10 @@ Parameters.Forte.Circle.ValueColor     = [0 0 0];                               
 % Target => @Circle
 Parameters.Forte.Target.DimensionRatio = 0.10;                                   % diameter  = DimensionRatio*ScreenHeight
 Parameters.Forte.Target.WidthRatio     = 0.10;                                   % thickness = WidthRatio    *diameter
-Parameters.Forte.Target.FrameColor     = [ 0 0 0 ];                          % [R G B] ( from 0 to 255 )
+Parameters.Forte.Target.FrameColor     = [ 0 0 0 ];                              % [R G B] ( from 0 to 255 )
 Parameters.Forte.Target.DiskColor      = Parameters.Video.ScreenBackgroundColor; % [R G B] ( from 0 to 255 )
 Parameters.Forte.Target.ValueColor     = [255 215 0];                            % [R G B] ( from 0 to 255 ) Gold color !
-Parameters.Forte.Target.Angle          = [150 120 90 60 30]; % in degree, from LEFT to RIGHT
+Parameters.Forte.Target.Angle          = [150 120 90 60 30];                     % in degree, from LEFT to RIGHT
 
 % Cursor => @Dot
 Parameters.Forte.Cursor.DimensionRatio = 0.04;          % diameter = DimensionRatio*ScreenHeight
@@ -108,9 +108,9 @@ Parameters.Forte.Cursor.DiskColor      = [50 50 50];    % [R G B] ( from 0 to 25
 Parameters.Forte.Cursor.FrameColor     = [0 0 0];       % [R G B] ( from 0 to 255 )
 
 % Small cross at the center => @FixationCross
-Parameters.Forte.Cross.ScreenRatio     = 0.05;          % ratio : dim   = ScreenHeight*ratio_screen
+Parameters.Forte.Cross.ScreenRatio     = 0.10;          % ratio : dim   = ScreenHeight*ratio_screen
 Parameters.Forte.Cross.lineWidthRatio  = 0.10;          % ratio : width = dim         *ratio_width
-Parameters.Forte.Cross.Color           = [0 0 0]; % [R G B] ( from 0 to 255 )
+Parameters.Forte.Cross.Color           = [0 0 0];       % [R G B] ( from 0 to 255 )
 
 %%%%%%%%%%%%%%
 %  Keybinds  %
