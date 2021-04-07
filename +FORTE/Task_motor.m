@@ -21,15 +21,14 @@ try
     
     %% Prepare event record and keybinf logger
     
-    % [ ER, RR, KL, SR ] = Common.PrepareRecorders( EP );
-    [ ER, RR, KL, BR ] = Common.PrepareRecorders( EP, Parameters, task_version );
+    [ ER, RR, KL, SR, BR ] = Common.PrepareRecorders( EP, Parameters, task_version );
     
     % This is a pointer copy, not a deep copy
     S.EP = EP;
     S.ER = ER;
     S.RR = KL;
     S.BR = BR;
-    % S.SR = SR;
+    S.SR = SR;
     
     
     %% Prepare objects
@@ -113,8 +112,10 @@ try
                 Cross.Draw();
                 TargetFixation.frameCurrentColor = TargetFixation.frameBaseColor;
                 TargetFixation.Draw();
+                Cursor.Update(S.InputMethod);
                 
                 onset_fixation = Screen('Flip', S.PTB.wPtr);
+                SR.AddSample([onset_fixation-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                 
                 ER.AddEvent({EP.Data{evt,1} onset_fixation-StartTime [] EP.Data{evt,4:end}});
                 %RR.AddEvent({[EP.Data{evt,1} '_CROSS'] lastFlipOnset-StartTime [] []});
@@ -126,7 +127,6 @@ try
                     
                     % Fetch keys
                     [keyIsDown, secs, keyCode] = KbCheck;
-                    
                     if keyIsDown
                         % ~~~ ESCAPE key ? ~~~
                         [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
@@ -135,6 +135,13 @@ try
                         end
                     end
                     
+                    BigCircle.Draw();
+                    Cross.Draw();
+                    TargetFixation.Draw();
+                    Cursor.Update(S.InputMethod);
+                    last_flip_onset = Screen('Flip', S.PTB.wPtr);
+                    SR.AddSample([last_flip_onset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+                
                 end % while
                 if EXIT
                     break
@@ -164,9 +171,10 @@ try
                         error('something went wring with workflow if task_version=%s', task_version)
                 end
                 
-                
+                Cursor.Update(S.InputMethod);
                 onset_instruction = Screen('Flip', S.PTB.wPtr);
                 ER.AddEvent({EP.Data{evt,1} onset_instruction-StartTime [] EP.Data{evt,4:end}});
+                SR.AddSample([onset_instruction-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                 
                 
             case 'Response' % ---------------------------------------------
@@ -302,8 +310,8 @@ try
                     Cursor.Draw();
                     
                     Screen('DrawingFinished',S.PTB.wPtr);
-                    Screen('Flip', S.PTB.wPtr);
-                    
+                    last_flip_onset = Screen('Flip', S.PTB.wPtr);
+                    SR.AddSample([last_flip_onset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                     
                 end % while
@@ -357,10 +365,11 @@ try
                 end
                 nTot = nTot + 1;
                 
+                Cursor.Update(S.InputMethod);
                 onset_outcome = Screen('Flip', S.PTB.wPtr);
-                
                 BR.AddEvent({nTot block trial triplet reward totalmaxreward OUTCOME.total.value is_good is_bad is_max ...
                     onset_fixation-StartTime onset_instruction-StartTime onset_key_1-StartTime onset_key_2-StartTime onset_key_3-StartTime onset_outcome-StartTime});
+                SR.AddSample([onset_outcome-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                 
                 % log
                 gain_pct = round( 100*OUTCOME.total.value/totalmaxreward );
@@ -379,13 +388,10 @@ try
                 when = onset_outcome + EP.Data{evt,3} - S.PTB.slack;
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 secs = onset_outcome;
-                while secs < when
-                    
-                    % SR.AddSample([secs-StartTime 0 0])
+                while secs < when    
                     
                     % Fetch keys
                     [keyIsDown, secs, keyCode] = KbCheck;
-                    
                     if keyIsDown
                         % ~~~ ESCAPE key ? ~~~
                         [ EXIT, StopTime ] = Common.Interrupt( keyCode, ER, RR, StartTime );
@@ -393,6 +399,23 @@ try
                             break
                         end
                     end
+                    
+                    Cross.Draw();
+                    
+                    switch valid_reward
+                        case 1 % good
+                            switch reward
+                                case 'high'
+                                    OUTCOME.high_reward.Draw();
+                                case 'low'
+                                    OUTCOME.low_reward.Draw();
+                            end
+                    end
+                    OUTCOME.Draw();
+                    
+                    Cursor.Update(S.InputMethod);
+                    last_flip_onset = Screen('Flip', S.PTB.wPtr);
+                    SR.AddSample([last_flip_onset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                     
                 end % while
                 if EXIT
@@ -416,8 +439,10 @@ try
                 OUTCOME.high_reward.Draw();
                 OUTCOME.low_reward.Draw();
                 
+                Cursor.Update(S.InputMethod);
                 onset_forcedchoice = Screen('Flip', S.PTB.wPtr);
                 ER.AddEvent({EP.Data{evt,1} onset_forcedchoice-StartTime [] EP.Data{evt,4:end}});
+                SR.AddSample([onset_forcedchoice-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
                 
                 when = onset_forcedchoice + Parameters.MaxTime - S.PTB.slack;
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -464,6 +489,14 @@ try
                         
                     end
                     
+                    Cross.Draw();
+                    TargetFixation.Draw();
+                    OUTCOME.high_reward.Draw();
+                    OUTCOME.low_reward.Draw();
+                    Cursor.Update(S.InputMethod);
+                    last_flip_onset = Screen('Flip', S.PTB.wPtr);
+                    SR.AddSample([last_flip_onset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
+
                 end % while
                 if EXIT
                     break
@@ -508,8 +541,7 @@ try
         PsychPortAudio('Close');
     end
     
-    % TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime );
-    TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, BR, StartTime, StopTime );
+    TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, BR, StartTime, StopTime );
     
     TaskData.behaviour = cell2table( TaskData.BR.Data, 'VariableNames', TaskData.BR.Header, 'RowNames', cellstr(num2str( cell2mat( TaskData.BR.Data(:,1) ) )));
     TaskData.behaviour.triplet = num2str(TaskData.behaviour.triplet);
