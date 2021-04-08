@@ -65,9 +65,9 @@ Parameters.Text.ClickCorlor = [0   255 0  ]; % [R G B] ( from 0 to 255 )
 
 % Crosses where the circle will apear, first displayed in the "fixation"
 Parameters.Forte.Fixation.center_x_ratio      = 0.5;         % from 0 to 1
-Parameters.Forte.Fixation.center_y_ratio      = 0.4;         % from 0 to 1
-Parameters.Forte.Fixation.spacing_x_ratio     = 0.10;         % from 0 to 1
-Parameters.Forte.Fixation.spacing_y_ratio     = 0.10;         % from 0 to 1
+Parameters.Forte.Fixation.center_y_ratio      = 0.55;        % from 0 to 1
+Parameters.Forte.Fixation.spacing_x_ratio     = 0.10;        % from 0 to 1
+Parameters.Forte.Fixation.spacing_y_ratio     = 0.10;        % from 0 to 1
 Parameters.Forte.Fixation.dimension_ratio     = 0.07;        % from 0 to 1
 Parameters.Forte.Fixation.width_height_ratio  = 1/10;        % from 0 to 1
 Parameters.Forte.Fixation.color               = [0 0 0]; % [R G B a]
@@ -80,9 +80,9 @@ Parameters.Forte.Instruction.color              = [150 0 0]; % [R G B a]
 % Images displayed (and text) representing the reward (+10e or +0.01e), displayed in "outcome"
 Parameters.Forte.Outcome.fname_10euro       = '10-euro-note.jpeg';
 Parameters.Forte.Outcome.fname_1cent        = '1-cent.png';
-Parameters.Forte.Outcome.dimension_ratio    = 0.3;                 % from 0 to 1
-Parameters.Forte.Outcome.y_offcet_ratio_img = 0.75;                % from 0 to 1
-Parameters.Forte.Outcome.y_offcet_ratio_txt = 0.2;                 % from 0 to 1
+Parameters.Forte.Outcome.dimension_ratio    = 0.3;                  % from 0 to 1
+Parameters.Forte.Outcome.y_offcet_ratio_img = 0.20;                 % from 0 to 1
+Parameters.Forte.Outcome.y_offcet_ratio_txt = 0.75;                 % from 0 to 1
 Parameters.Forte.Outcome.font_color         = [150 0 0]; % [R G B] ( from 0 to 255 )
 Parameters.Forte.Outcome.font_size_ratio    = 0.3;
 Parameters.Forte.Outcome.fname_cash         = 'cash_register.wav';
