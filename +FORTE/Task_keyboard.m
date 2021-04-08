@@ -22,7 +22,7 @@ try
     %% Prepare event record and keybinf logger
     
     % [ ER, RR, KL, SR ] = Common.PrepareRecorders( EP );
-    [ ER, RR, KL, BR ] = Common.PrepareRecorders( EP, Parameters, task_version );
+    [ ER, RR, KL, SR, BR ] = Common.PrepareRecorders( EP, Parameters, task_version );
     
     % This is a pointer copy, not a deep copy
     S.EP = EP;
@@ -415,8 +415,7 @@ try
         PsychPortAudio('Close');
     end
     
-    % TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, StartTime, StopTime );
-    TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, BR, StartTime, StopTime );
+    TaskData = Common.EndOfStimulation( TaskData, EP, ER, RR, KL, SR, BR, StartTime, StopTime );
     
     TaskData.behaviour = cell2table( TaskData.BR.Data, 'VariableNames', TaskData.BR.Header, 'RowNames', cellstr(num2str( cell2mat( TaskData.BR.Data(:,1) ) )));
     TaskData.behaviour.triplet = num2str(TaskData.behaviour.triplet);
