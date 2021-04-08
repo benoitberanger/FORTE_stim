@@ -1,14 +1,38 @@
 function [ outcome ] = Outcome( task_version )
 global S
 
-outcome = Outcome( ...
-    fullfile(pwd,'img',S.Parameters.Forte.Outcome.fname_10euro),...
-    fullfile(pwd,'img',S.Parameters.Forte.Outcome.fname_1cent),...
-    S.Parameters.Forte.Outcome.dimension_ratio,...
-    [S.PTB.CenterH S.PTB.CenterV],...
-    S.Parameters.Forte.Outcome.font_color,...
-    S.Parameters.Forte.Outcome.font_size_ratio...
-    );
+is_mouse    = strfind(S.Task,'mouse');
+is_joystick = strfind(S.Task,'joystick');
+is_keyboard = strfind(S.Task,'keyboard');
+is_motor = ~isempty(is_mouse) | ~isempty(is_joystick);
+
+if is_keyboard
+
+    outcome = Outcome( ...
+        fullfile(pwd,'img',S.Parameters.Forte.Outcome.fname_10euro),...
+        fullfile(pwd,'img',S.Parameters.Forte.Outcome.fname_1cent),...
+        S.Parameters.Forte.Outcome.Keyboard.dimension_ratio,...
+        [S.PTB.CenterH S.PTB.CenterV],...
+        S.Parameters.Forte.Outcome.font_color,...
+        S.Parameters.Forte.Outcome.font_size_ratio...
+        );
+    
+elseif is_motor
+    
+    outcome = Outcome( ...
+        fullfile(pwd,'img',S.Parameters.Forte.Outcome.fname_10euro),...
+        fullfile(pwd,'img',S.Parameters.Forte.Outcome.fname_1cent),...
+        S.Parameters.Forte.Outcome.Motor.dimension_ratio,...
+        [S.PTB.CenterH S.PTB.CenterV],...
+        S.Parameters.Forte.Outcome.font_color,...
+        S.Parameters.Forte.Outcome.font_size_ratio...
+        );
+    
+else
+    
+    error('???')
+
+end
 
 % Generate PTB texture
 outcome.LinkToWindowPtr( S.PTB.wPtr )
@@ -22,17 +46,32 @@ scale = S.PTB.wRect(4)/outcome.low_reward.baseRect(4) * outcome.dimension_ratio;
 outcome.low_reward.Rescale(scale);
 
 % Move
-switch task_version
-    case {'implicit', 'explicit'}
-        outcome.high_reward.Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
-        outcome.low_reward. Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
-    case 'forced_choice'
-        outcome.high_reward.Move([outcome.screen_center_px(1)*0.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
-        outcome.low_reward. Move([outcome.screen_center_px(1)*1.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.y_offcet_ratio_img]);
+if is_keyboard
+    switch task_version
+        case {'implicit', 'explicit'}
+            outcome.high_reward.Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
+            outcome.low_reward. Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
+        case 'forced_choice'
+            outcome.high_reward.Move([outcome.screen_center_px(1)*0.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
+            outcome.low_reward. Move([outcome.screen_center_px(1)*1.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
+    end
+elseif is_motor
+    switch task_version
+        case {'implicit', 'explicit'}
+            outcome.high_reward.Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
+            outcome.low_reward. Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
+        case 'forced_choice'
+            outcome.high_reward.Move([outcome.screen_center_px(1)*0.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
+            outcome.low_reward. Move([outcome.screen_center_px(1)*1.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
+    end
 end
 
 outcome.total.LinkToWindowPtr( S.PTB.wPtr );
-outcome.total.Yptb = S.PTB.wRect(4) * S.Parameters.Forte.Outcome.y_offcet_ratio_txt;
+if is_keyboard
+    outcome.total.Yptb = S.PTB.wRect(4) * S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_txt;
+elseif is_motor
+    outcome.total.Yptb = S.PTB.wRect(4) * S.Parameters.Forte.Outcome.Motor   .y_offcet_ratio_txt;
+end
 outcome.total.GenRect();
 
 outcome.AssertReady % just to check

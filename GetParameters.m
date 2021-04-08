@@ -80,9 +80,14 @@ Parameters.Forte.Instruction.color              = [150 0 0]; % [R G B a]
 % Images displayed (and text) representing the reward (+10e or +0.01e), displayed in "outcome"
 Parameters.Forte.Outcome.fname_10euro       = '10-euro-note.jpeg';
 Parameters.Forte.Outcome.fname_1cent        = '1-cent.png';
-Parameters.Forte.Outcome.dimension_ratio    = 0.3;                  % from 0 to 1
-Parameters.Forte.Outcome.y_offcet_ratio_img = 0.20;                 % from 0 to 1
-Parameters.Forte.Outcome.y_offcet_ratio_txt = 0.75;                 % from 0 to 1
+
+Parameters.Forte.Outcome.Keyboard.dimension_ratio    = 0.3;                  % from 0 to 1
+Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img = 0.20;                 % from 0 to 1
+Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_txt = 0.75;                 % from 0 to 1
+Parameters.Forte.Outcome.Motor   .dimension_ratio    = 0.2;                  % from 0 to 1
+Parameters.Forte.Outcome.Motor   .y_offcet_ratio_img = 0.32;                 % from 0 to 1
+Parameters.Forte.Outcome.Motor   .y_offcet_ratio_txt = 0.70;                 % from 0 to 1
+
 Parameters.Forte.Outcome.font_color         = [150 0 0]; % [R G B] ( from 0 to 255 )
 Parameters.Forte.Outcome.font_size_ratio    = 0.3;
 Parameters.Forte.Outcome.fname_cash         = 'cash_register.wav';
@@ -90,7 +95,7 @@ Parameters.Forte.Outcome.fname_cash         = 'cash_register.wav';
 % Big circle => @Circle
 Parameters.Forte.Circle.DimensionRatio = 0.80;                                   % diameter  = DimensionRatio*ScreenHeight
 Parameters.Forte.Circle.WidthRatio     = 0.01;                                   % thickness = WidthRatio    *diameter
-Parameters.Forte.Circle.FrameColor     = [0 0 0 ];                          % [R G B] ( from 0 to 255 )
+Parameters.Forte.Circle.FrameColor     = [0 0 0 ];                               % [R G B] ( from 0 to 255 )
 Parameters.Forte.Circle.DiskColor      = Parameters.Video.ScreenBackgroundColor; % [R G B] ( from 0 to 255 )
 Parameters.Forte.Circle.ValueColor     = [0 0 0];                                % [R G B] ( from 0 to 255 ) useless for the big circle
 

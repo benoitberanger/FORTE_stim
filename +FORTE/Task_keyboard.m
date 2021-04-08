@@ -1,8 +1,6 @@
 function [ TaskData ] = Task_keyboard( task_version )
 global S
 
-S.PTB.slack = 0.001;
-
 try
     %% Tunning of the task
     
@@ -21,7 +19,6 @@ try
     
     %% Prepare event record and keybinf logger
     
-    % [ ER, RR, KL, SR ] = Common.PrepareRecorders( EP );
     [ ER, RR, KL, SR, BR ] = Common.PrepareRecorders( EP, Parameters, task_version );
     
     % This is a pointer copy, not a deep copy
@@ -29,7 +26,7 @@ try
     S.ER = ER;
     S.RR = KL;
     S.BR = BR;
-    % S.SR = SR;
+    S.SR = SR;
     
     
     %% Prepare objects
@@ -41,6 +38,7 @@ try
         CASH_SOUND  = FORTE.Prepare.Cash();
         WHITE_NOISE = FORTE.Prepare.WhiteNoise( CASH_SOUND );
     end
+    
     
     %% Eyelink
     

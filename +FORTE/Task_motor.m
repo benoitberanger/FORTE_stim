@@ -1,8 +1,6 @@
 function [ TaskData ] = Task_motor( task_version )
 global S newX newY
 
-S.PTB.slack = 0.001;
-
 try
     %% Tunning of the task
     
