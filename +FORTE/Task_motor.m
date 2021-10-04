@@ -487,6 +487,7 @@ try
                         
                     end
                     
+                    BigCircle.Draw();
                     Cross.Draw();
                     TargetFixation.Draw();
                     OUTCOME.high_reward.Draw();

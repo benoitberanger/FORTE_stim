@@ -1,10 +1,8 @@
 function [ outcome ] = Outcome( task_version )
 global S
 
-is_mouse    = strfind(S.Task,'mouse');
-is_joystick = strfind(S.Task,'joystick');
-is_keyboard = strfind(S.Task,'keyboard');
-is_motor = ~isempty(is_mouse) | ~isempty(is_joystick);
+is_keyboard = ~isempty(strfind(S.Task,'keyboard'));
+is_motor    = ~isempty(strfind(S.Task,'motor'   )) | ~isempty(strfind(S.Task,'mouse')) | ~isempty(strfind(S.Task,'joystick'));
 
 if is_keyboard
 
@@ -61,8 +59,8 @@ elseif is_motor
             outcome.high_reward.Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
             outcome.low_reward. Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
         case 'forced_choice'
-            outcome.high_reward.Move([outcome.screen_center_px(1)*0.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
-            outcome.low_reward. Move([outcome.screen_center_px(1)*1.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
+            outcome.high_reward.Move([outcome.screen_center_px(1)*0.3 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
+            outcome.low_reward. Move([outcome.screen_center_px(1)*1.7 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Motor.y_offcet_ratio_img]);
     end
 end
 
