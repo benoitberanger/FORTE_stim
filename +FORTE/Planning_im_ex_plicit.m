@@ -85,7 +85,26 @@ totalmaxreward = 0;
 
 for iBlock = 1 : Parameters.nBlock
     
-    shuffled_triplet_reward = Shuffle(randomized_triplet_reward,2);
+    
+    if iBlock == 1
+        
+        shuffled_triplet_reward = Shuffle(randomized_triplet_reward,2);
+        
+    else % ensure the first triplet of the new block is different from the last triplet of the last block
+        
+        prev_triplet = shuffled_triplet_reward{end,1};
+        
+        shuffled_triplet_reward = Shuffle(randomized_triplet_reward,2);
+        first_triplet = shuffled_triplet_reward{1,1};
+        condition = all(prev_triplet == first_triplet);
+        
+        while condition
+            shuffled_triplet_reward = Shuffle(randomized_triplet_reward,2);
+            first_triplet = shuffled_triplet_reward{1,1};
+            condition = all(prev_triplet == first_triplet);
+        end
+        
+    end
     
     for iTrialinBlock = 1 : size(shuffled_triplet_reward,1)
         
