@@ -67,6 +67,7 @@ try
                 % Fetch initialization data
                 switch S.InputMethod
                     case 'Joystick'
+                        joymex2('open',0);
                         [newX, newY] = FORTE.QueryJoystickData( Cursor.screenX, Cursor.screenY );
                     case 'Mouse'
                         SetMouse(Cursor.Xptb,Cursor.Yptb,Cursor.wPtr);
