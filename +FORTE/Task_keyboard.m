@@ -37,7 +37,7 @@ try
     if S.with_sound
         HIGH_REWARD = FORTE.Prepare.HighReward();
         LOW_REWARD  = FORTE.Prepare.LowReward();
-        WHITE_NOISE = FORTE.Prepare.WhiteNoise( HIGH_REWARD );
+        WHITE_NOISE = FORTE.Prepare.WhiteNoise( LOW_REWARD );
     end
     
     
