@@ -35,8 +35,9 @@ try
     INSTRUCTION = FORTE.Prepare.Instruction( FIXATION );
     OUTCOME     = FORTE.Prepare.Outcome( task_version );
     if S.with_sound
-        CASH_SOUND  = FORTE.Prepare.Cash();
-        WHITE_NOISE = FORTE.Prepare.WhiteNoise( CASH_SOUND );
+        HIGH_REWARD = FORTE.Prepare.HighReward();
+        LOW_REWARD  = FORTE.Prepare.LowReward();
+        WHITE_NOISE = FORTE.Prepare.WhiteNoise( HIGH_REWARD );
     end
     
     
@@ -236,16 +237,17 @@ try
                             case 'high'
                                 OUTCOME.high_reward.Draw();
                                 OUTCOME.total.value = OUTCOME.total.value + 10.00;
+                                if S.with_sound, HIGH_REWARD.Playback(); end
                             case 'low'
                                 OUTCOME.low_reward.Draw();
                                 OUTCOME.total.value = OUTCOME.total.value + 00.01;
+                                if S.with_sound, LOW_REWARD.Playback(); end
                         end
                         
                         is_good = 1;
                         nGood = nGood + 1;
                         logmsg = '';
                         OUTCOME.Draw();
-                        if S.with_sound, CASH_SOUND.Playback(); end
                         
                     case 0 % bad
                         

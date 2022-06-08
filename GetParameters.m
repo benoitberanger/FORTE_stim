@@ -90,7 +90,8 @@ Parameters.Forte.Outcome.Motor   .y_offcet_ratio_txt = 0.70;                 % f
 
 Parameters.Forte.Outcome.font_color         = [150 0 0]; % [R G B] ( from 0 to 255 )
 Parameters.Forte.Outcome.font_size_ratio    = 0.3;
-Parameters.Forte.Outcome.fname_cash         = 'cash_register.wav';
+Parameters.Forte.Outcome.fname_highreward   = 'cash_register.wav';
+Parameters.Forte.Outcome.fname_lowreward    = 'coin_drop.wav';
 
 % Big circle => @Circle
 Parameters.Forte.Circle.DimensionRatio = 0.80;                                   % diameter  = DimensionRatio*ScreenHeight
