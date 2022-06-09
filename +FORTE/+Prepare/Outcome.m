@@ -50,8 +50,8 @@ if is_keyboard
             outcome.high_reward.Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
             outcome.low_reward. Move([outcome.screen_center_px(1) outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
         case 'forced_choice'
-            outcome.high_reward.Move([outcome.screen_center_px(1)*0.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
-            outcome.low_reward. Move([outcome.screen_center_px(1)*1.5 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
+            outcome.high_reward.Move([outcome.screen_center_px(1)*0.35 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
+            outcome.low_reward. Move([outcome.screen_center_px(1)*1.60 outcome.screen_center_px(2)*2*S.Parameters.Forte.Outcome.Keyboard.y_offcet_ratio_img]);
     end
 elseif is_motor
     switch task_version
