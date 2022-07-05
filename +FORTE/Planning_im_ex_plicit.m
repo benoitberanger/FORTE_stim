@@ -14,7 +14,6 @@ end
         Parameters.OutcomeDuration    = 1.500; % s
         Parameters.nBlock             = 15;
         Parameters.MaxTime            = 10;    % s
-        Parameters.DisableLastGoodKey = 0.500; % s
 %     case 'FastDebug'
 %         
 %     case 'RealisticDebug'

@@ -159,6 +159,7 @@ try
                 
                 ER.AddEvent({EP.Data{evt,1} onset_instruction-StartTime [] EP.Data{evt,4:end}});
                 
+                key_already_pressed = zeros(size(S.Parameters.Fingers.Vect));
                 when = onset_instruction + Parameters.MaxTime - S.PTB.slack;
                 %==========================================================
                 secs = onset_instruction;
@@ -175,17 +176,19 @@ try
                         end
                         
                         % Select only the response keys
-                        is_response_key_being_presed = keyCode(S.Parameters.Fingers.Vect);
+                        response_key_being_presed = keyCode(S.Parameters.Fingers.Vect);
                         
-                        % Disable last good key press for a few milliseconds, to avoid double input
-                        if secs - last_good_key_onset < Parameters.DisableLastGoodKey
-                            is_response_key_being_presed(keys_to_press(n_good_press-1)) = 0;
-                        end
-                        
-                        if any(is_response_key_being_presed)
+                        if any(response_key_being_presed)
                             
-                            response_key_being_presed = find(is_response_key_being_presed);
-                            is_good_key = sum(response_key_being_presed == target_key);
+                            % mask to disable previous good keys
+                            response_key_being_presed = response_key_being_presed.*~key_already_pressed;
+                            
+                            if sum(response_key_being_presed) == 0
+                                continue
+                            end
+                            
+                            is_good_key = response_key_being_presed(target_key);
+                            key_already_pressed = key_already_pressed + response_key_being_presed;
                             
                             if is_good_key % Good
                                 
