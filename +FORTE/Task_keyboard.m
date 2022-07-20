@@ -133,6 +133,7 @@ try
                                 OUTCOME.high_reward.Draw();
                             case 'low'
                                 OUTCOME.low_reward.Draw();
+                                OUTCOME.DrawRedCross();
                         end
                     otherwise
                         error('something went wring with workflow if task_version=%s', task_version)
@@ -243,7 +244,8 @@ try
                                 if S.with_sound, HIGH_REWARD.Playback(); end
                             case 'low'
                                 OUTCOME.low_reward.Draw();
-                                OUTCOME.total.value = OUTCOME.total.value + 00.01;
+                                OUTCOME.DrawRedCross();
+                                % OUTCOME.total.value = OUTCOME.total.value + 00.01;
                                 if S.with_sound, LOW_REWARD.Playback(); end
                         end
                         
@@ -325,6 +327,7 @@ try
                 INSTRUCTION.Draw( triplet );
                 OUTCOME.high_reward.Draw();
                 OUTCOME.low_reward.Draw();
+                OUTCOME.DrawRedCross();
                 
                 onset_forcedchoice = Screen('Flip', S.PTB.wPtr);
                 ER.AddEvent({EP.Data{evt,1} onset_forcedchoice-StartTime [] EP.Data{evt,4:end}});

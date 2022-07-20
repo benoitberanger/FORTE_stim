@@ -166,6 +166,7 @@ try
                                 OUTCOME.high_reward.Draw();
                             case 'low'
                                 OUTCOME.low_reward.Draw();
+                                OUTCOME.DrawRedCross();
                         end
                     otherwise
                         error('something went wring with workflow if task_version=%s', task_version)
@@ -301,6 +302,7 @@ try
                                     OUTCOME.high_reward.Draw();
                                 case 'low'
                                     OUTCOME.low_reward.Draw();
+                                    OUTCOME.DrawRedCross();
                             end
                         otherwise
                             error('something went wring with workflow if task_version=%s', task_version)
@@ -338,7 +340,8 @@ try
                                 if S.with_sound, HIGH_REWARD.Playback(); end
                             case 'low'
                                 OUTCOME.low_reward.Draw();
-                                OUTCOME.total.value = OUTCOME.total.value + 00.01;
+                                OUTCOME.DrawRedCross();
+                                % OUTCOME.total.value = OUTCOME.total.value + 00.01;
                                 if S.with_sound, LOW_REWARD.Playback(); end
                         end
                         
@@ -410,6 +413,7 @@ try
                                     OUTCOME.high_reward.Draw();
                                 case 'low'
                                     OUTCOME.low_reward.Draw();
+                                    OUTCOME.DrawRedCross();
                             end
                     end
                     OUTCOME.Draw();
@@ -439,6 +443,7 @@ try
                 
                 OUTCOME.high_reward.Draw();
                 OUTCOME.low_reward.Draw();
+                OUTCOME.DrawRedCross();
                 
                 Cursor.Update(S.InputMethod);
                 onset_forcedchoice = Screen('Flip', S.PTB.wPtr);
@@ -495,6 +500,7 @@ try
                     TargetFixation.Draw();
                     OUTCOME.high_reward.Draw();
                     OUTCOME.low_reward.Draw();
+                    OUTCOME.DrawRedCross();
                     Cursor.Update(S.InputMethod);
                     last_flip_onset = Screen('Flip', S.PTB.wPtr);
                     SR.AddSample([last_flip_onset-StartTime Cursor.X Cursor.Y Cursor.R Cursor.Theta])
